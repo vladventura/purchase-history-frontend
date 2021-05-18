@@ -10,7 +10,7 @@ import { JWT_TOKEN_KEY } from "./constants";
 // Using memory for caching queries
 // createHttpLink that returns an apollo link
 const link = createHttpLink({
-  uri: "http://localhost:4000",
+  uri: "http://localhost:4000/graphql",
 });
 
 const authLink = setContext(() => {
