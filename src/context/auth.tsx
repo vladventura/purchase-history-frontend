@@ -1,14 +1,15 @@
 import { createContext, useReducer } from "react";
 import jwtDecode from "jwt-decode";
 import { JWT_TOKEN_KEY } from "../constants";
+import { User } from "../graphql/schemas";
 
 // This is the expected result from jwtDecode
-interface Jwtitem {
+interface Jwtitem extends User{
   exp: number;
 }
 interface State {
   user: Jwtitem | null;
-  login: (userData: { token: any }) => void;
+  login: (userData: User) => void;
   logout: () => void;
 }
 // This is like a replacement of Redux
