@@ -5,6 +5,7 @@ import { AuthContext } from "../context/auth";
 import { REGISTER_USER_MUTATION } from "../graphql/mutations";
 import { OnForm } from "../utils/hooks";
 import { UserMutation } from "../graphql/mutations";
+import { FormErrorsType } from "../common/types";
 
 const Register = (props: any) => {
   const initState = {
@@ -16,14 +17,8 @@ const Register = (props: any) => {
 
   const { values, onChange, onSubmit } = OnForm(registerUser, initState);
 
-  type ErrorsInitState = {
-    username: string | null;
-    email: string | null;
-    password: string | null;
-    confirmPassword: string | null;
-  };
   const context = useContext(AuthContext);
-  const [errors, setErrors] = useState({} as ErrorsInitState);
+  const [errors, setErrors] = useState({} as FormErrorsType);
 
   const [register, { loading }] = useMutation(REGISTER_USER_MUTATION, {
     update: (_, result) => {

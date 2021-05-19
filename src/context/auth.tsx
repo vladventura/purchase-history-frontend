@@ -49,7 +49,10 @@ function authReducer(state: State, action: { type: string; payload?: any }) {
 function AuthProvider(props: Object) {
   const [state, dispatch] = useReducer(authReducer, initState);
   const login = (userData: UserMutation) => {
-    localStorage.setItem(JWT_TOKEN_KEY, userData.data.register.token || "");
+    localStorage.setItem(
+      JWT_TOKEN_KEY,
+      userData.data.register?.token || userData.data.login?.token || ""
+    );
     dispatch({
       type: "LOGIN",
       payload: userData,
