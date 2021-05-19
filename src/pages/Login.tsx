@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { Button, Container, Form } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 import { AuthContext } from "../context/auth";
-import { REGISTER_USER_MUTATION } from "../graphql/mutations";
+import { LOGIN_USER_MUTATION } from "../graphql/mutations";
 import { OnForm } from "../utils/hooks";
 import { UserMutation } from "../graphql/mutations";
 import { FormErrorsType } from "../common/types";
@@ -10,9 +10,7 @@ import { FormErrorsType } from "../common/types";
 const Login = (props: any) => {
   const initState = {
     username: "",
-    email: "",
     password: "",
-    confirmPassword: "",
   };
 
   const { values, onChange, onSubmit } = OnForm(registerUser, initState);
@@ -21,7 +19,7 @@ const Login = (props: any) => {
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({} as FormErrorsType);
 
-  const [register, { loading }] = useMutation(REGISTER_USER_MUTATION, {
+  const [register, { loading }] = useMutation(LOGIN_USER_MUTATION, {
     update: (_, result) => {
       context.login(result as UserMutation);
       props.history.push("/");
@@ -41,7 +39,7 @@ const Login = (props: any) => {
     <Container className="middle aligned center aligned grid">
       <div className="column">
         <h2 className="ui header">
-          <div className="content">Register a new account</div>
+          <div className="content">Log into your account</div>
         </h2>
         <Form
           onSubmit={onSubmit}
@@ -59,15 +57,6 @@ const Login = (props: any) => {
               icon={<i className="user icon" />}
             />
             <Form.Input
-              placeholder="Email"
-              name="email"
-              onChange={onChange}
-              value={values.email}
-              error={errors.email ? true : false}
-              iconPosition="left"
-              icon={<i className="mail icon" />}
-            />
-            <Form.Input
               placeholder="Password"
               name="password"
               onChange={onChange}
@@ -77,18 +66,8 @@ const Login = (props: any) => {
               iconPosition="left"
               icon={<i className="lock icon" />}
             />
-            <Form.Input
-              onChange={onChange}
-              name="confirmPassword"
-              value={values.confirmPassword}
-              type="password"
-              error={errors.confirmPassword ? true : false}
-              placeholder="Confirm Password"
-              iconPosition="left"
-              icon={<i className="lock icon" />}
-            />
             <Button fluid type="submit" primary className="button">
-              Register
+              Log in
             </Button>
           </div>
         </Form>
@@ -102,7 +81,7 @@ const Login = (props: any) => {
           </div>
         )}
         <div className="ui message">
-          Have an account already? <a href="/login"> Sign in!</a>
+          Don't have an account yet? <a href="/register"> Make a new one!</a>
         </div>
       </div>
     </Container>
