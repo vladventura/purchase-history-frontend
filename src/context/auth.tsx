@@ -2,20 +2,22 @@ import { createContext, useReducer } from "react";
 import jwtDecode from "jwt-decode";
 import { JWT_TOKEN_KEY } from "../constants";
 import { User } from "../graphql/schemas";
+import { UserData } from "../common/types";
 
 // This is the expected result from jwtDecode
-interface Jwtitem extends User{
+interface Jwtitem extends User {
   exp: number;
 }
 interface State {
   user: Jwtitem | null;
-  login: (userData: User) => void;
+  login: (userData: UserData) => void;
   logout: () => void;
 }
+
 // This is like a replacement of Redux
 const initState: State = {
   user: null,
-  login: (userData) => {},
+  login: (userData: UserData) => {},
   logout: () => {},
 };
 
@@ -29,7 +31,7 @@ if (localStorage.getItem(JWT_TOKEN_KEY)) {
 
 const AuthContext = createContext({
   user: null,
-  login: (userData) => {},
+  login: (userData: UserData) => {},
   logout: () => {},
 } as State);
 
@@ -46,8 +48,8 @@ function authReducer(state: State, action: { type: string; payload?: any }) {
 
 function AuthProvider(props: Object) {
   const [state, dispatch] = useReducer(authReducer, initState);
-  const login = (userData: { token: any }) => {
-    localStorage.setItem(JWT_TOKEN_KEY, userData.token);
+  const login = (userData: UserData) => {
+    localStorage.setItem(JWT_TOKEN_KEY, userData.data.register.token || "");
     dispatch({
       type: "LOGIN",
       payload: userData,
