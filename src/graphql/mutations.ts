@@ -1,9 +1,10 @@
 import gql from "graphql-tag";
 import { User } from "./schemas";
 
-export type UserRegisterMutation = {
+export type UserMutation = {
   data: {
-    register: User;
+    register?: User;
+    login?: User;
   };
 };
 
@@ -31,15 +32,9 @@ export const REGISTER_USER_MUTATION = gql`
   }
 `;
 
-export type UserLoginMutation = {
-  data: {
-    login: User;
-  };
-};
-
 export const LOGIN_USER_MUTATION = gql`
   mutation ($username: String!, $password: String!) {
-    login (username: $username, password: $password) {
+    login(username: $username, password: $password) {
       id
       token
       profile {
