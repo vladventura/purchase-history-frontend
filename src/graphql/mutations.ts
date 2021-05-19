@@ -31,8 +31,22 @@ export const REGISTER_USER_MUTATION = gql`
   }
 `;
 
+export type UserLoginMutation = {
+  data: {
+    login: User;
+  };
+};
+
 export const LOGIN_USER_MUTATION = gql`
   mutation ($username: String!, $password: String!) {
-    login
+    login (username: $username, password: $password) {
+      id
+      token
+      profile {
+        totalCost
+        totalPrice
+        totalAddedItems
+      }
+    }
   }
 `;
