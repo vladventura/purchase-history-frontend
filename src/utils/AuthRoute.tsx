@@ -2,7 +2,7 @@ import { Route, Redirect, RouteProps } from "react-router-dom";
 import { AuthContext } from "../context/auth";
 import React, { useContext } from "react";
 
-type AuthRouteProps = {
+interface AuthRouteProps extends RouteProps {
   component: React.FC<RouteProps>;
   rest?: any;
 };

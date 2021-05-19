@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Redirect } from "react-router";
+import { Redirect } from "react-router-dom";
 import { AuthContext } from "../context/auth";
 
 const Home = () => {

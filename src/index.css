@@ -1,0 +1,18 @@
+:root {
+  --main-background-color: #abcabc;
+}
+
+#root,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: var(--main-background-color);
+}
+
+#root > .grid {
+  height: 100%;
+}
+
+.column {
+  max-width: 30rem;
+}
