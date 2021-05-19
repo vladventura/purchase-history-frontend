@@ -2,7 +2,7 @@ import { createContext, useReducer } from "react";
 import jwtDecode from "jwt-decode";
 import { JWT_TOKEN_KEY } from "../constants";
 import { User } from "../graphql/schemas";
-import { UserData } from "../common/types";
+import { UserMutation } from "../graphql/mutations";
 
 // This is the expected result from jwtDecode
 interface Jwtitem extends User {
@@ -10,14 +10,14 @@ interface Jwtitem extends User {
 }
 interface State {
   user: Jwtitem | null;
-  login: (userData: UserData) => void;
+  login: (userData: UserMutation) => void;
   logout: () => void;
 }
 
 // This is like a replacement of Redux
 const initState: State = {
   user: null,
-  login: (userData: UserData) => {},
+  login: (userData: UserMutation) => {},
   logout: () => {},
 };
 
@@ -31,7 +31,7 @@ if (localStorage.getItem(JWT_TOKEN_KEY)) {
 
 const AuthContext = createContext({
   user: null,
-  login: (userData: UserData) => {},
+  login: (userData: UserMutation) => {},
   logout: () => {},
 } as State);
 
@@ -48,7 +48,7 @@ function authReducer(state: State, action: { type: string; payload?: any }) {
 
 function AuthProvider(props: Object) {
   const [state, dispatch] = useReducer(authReducer, initState);
-  const login = (userData: UserData) => {
+  const login = (userData: UserMutation) => {
     localStorage.setItem(JWT_TOKEN_KEY, userData.data.register.token || "");
     dispatch({
       type: "LOGIN",

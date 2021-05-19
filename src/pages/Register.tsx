@@ -4,7 +4,7 @@ import { useMutation } from "@apollo/client";
 import { AuthContext } from "../context/auth";
 import { REGISTER_USER_MUTATION } from "../graphql/mutations";
 import { OnForm } from "../utils/hooks";
-import { UserData } from "../common/types";
+import { UserMutation } from "../graphql/mutations";
 
 const Register = (props: any) => {
   const initState = {
@@ -27,7 +27,7 @@ const Register = (props: any) => {
 
   const [register, { loading }] = useMutation(REGISTER_USER_MUTATION, {
     update: (_, result) => {
-      context.login(result as UserData);
+      context.login(result as UserMutation);
       props.history.push("/");
     },
     onError: (err) => {
