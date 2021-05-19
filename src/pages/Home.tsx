@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { Card, CardContent, Container } from "semantic-ui-react";
+import moment from "moment";
 import { AuthContext } from "../context/auth";
 import "./Home.css";
 const Home = () => {
@@ -10,9 +11,19 @@ const Home = () => {
   // Should parse this from the user incoming from the context
   const items = [
     {
-      header: "Total items added",
+      header: "Items added",
       meta: "",
-      description: "95 items added",
+      description: user?.profile?.totalAddedItems,
+    },
+    {
+      header: "Price paid",
+      meta: "",
+      description: user?.profile?.totalPrice,
+    },
+    {
+      header: "Current cost",
+      meta: "",
+      description: user?.profile?.totalCost,
     },
   ];
 
@@ -21,8 +32,10 @@ const Home = () => {
       {console.log(user)}
       <Card fluid centered raised>
         <CardContent>
-          <Card.Header>Username</Card.Header>
-          <Card.Meta>Created ago</Card.Meta>
+          <Card.Header>{user?.username}</Card.Header>
+          <Card.Meta>
+            {moment(user?.createdAt).fromNow(false)}
+          </Card.Meta>
           <Card.Description>
             <Card.Group items={items} />
           </Card.Description>
