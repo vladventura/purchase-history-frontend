@@ -4,9 +4,3 @@ export type FormType = {
     email?: string,
     confirmPassword?: string
 }
-
-export type UserData = {
-    data: {
-        register: User;
-    };
-}
