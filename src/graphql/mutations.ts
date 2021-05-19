@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 import { User } from "./schemas";
 
-export type UserMutation = {
+export type UserRegisterMutation = {
   data: {
     register: User;
   };
