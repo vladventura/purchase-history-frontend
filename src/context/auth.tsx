@@ -1,7 +1,7 @@
 import { createContext, useReducer } from "react";
 import jwtDecode from "jwt-decode";
 import { JWT_TOKEN_KEY } from "../constants";
-import { User } from "../graphql/schemas";
+import { User, UserProfile } from "../graphql/schemas";
 import { UserMutation } from "../graphql/mutations";
 
 // This is the expected result from jwtDecode
@@ -25,8 +25,13 @@ if (localStorage.getItem(JWT_TOKEN_KEY)) {
   const decoded: Jwtitem = jwtDecode(
     localStorage.getItem(JWT_TOKEN_KEY) as any
   );
-  if (decoded.exp * 1000 < Date.now()) localStorage.removeItem(JWT_TOKEN_KEY);
-  else initState.user = decoded;
+  if (decoded.exp * 1000 < Date.now()) {
+    localStorage.removeItem("userProfile");
+    localStorage.removeItem(JWT_TOKEN_KEY);
+  } else {
+    const profile = JSON.parse(localStorage.getItem("userProfile" || "") ?? "");
+    initState.user = { ...decoded, profile };
+  }
 }
 
 const AuthContext = createContext({
@@ -49,13 +54,19 @@ function authReducer(state: State, action: { type: string; payload?: any }) {
 function AuthProvider(props: Object) {
   const [state, dispatch] = useReducer(authReducer, initState);
   const login = (userData: UserMutation) => {
+    console.log(userData);
     localStorage.setItem(
       JWT_TOKEN_KEY,
       userData.data.register?.token || userData.data.login?.token || ""
     );
+    // Save the profile here
+    const profile =
+      userData.data.register?.profile?? userData.data.login?.profile;
+    console.log(profile);
+    localStorage.setItem("userProfile", JSON.stringify(profile));
     dispatch({
       type: "LOGIN",
-      payload: userData,
+      payload: { ...userData, profile },
     });
   };
   const logout = () => {
