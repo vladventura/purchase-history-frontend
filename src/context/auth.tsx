@@ -59,14 +59,14 @@ function AuthProvider(props: Object) {
       JWT_TOKEN_KEY,
       userData.data.register?.token || userData.data.login?.token || ""
     );
+    const user = userData.data.register ?? userData.data.login;
     // Save the profile here
-    const profile =
-      userData.data.register?.profile?? userData.data.login?.profile;
+    const profile = user?.profile;
     console.log(profile);
     localStorage.setItem("userProfile", JSON.stringify(profile));
     dispatch({
       type: "LOGIN",
-      payload: { ...userData, profile },
+      payload: { ...user, profile },
     });
   };
   const logout = () => {
