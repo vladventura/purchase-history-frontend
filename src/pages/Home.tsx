@@ -1,15 +1,29 @@
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
-import { Card, CardContent, Container, Grid, Header } from "semantic-ui-react";
+import {
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Grid,
+  Header,
+} from "semantic-ui-react";
 import moment from "moment";
 import { AuthContext } from "../context/auth";
 import "./Home.css";
+import { Item } from "../graphql/schemas";
 const Home = () => {
   const { user } = useContext(AuthContext);
   const redirect = <Redirect to="/login" />;
 
+  const containerStyle = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
+  }
+
   // Should parse this from the user incoming from the context
-  const items = [
+  const info = [
     {
       header: "Items added",
       meta: "",
@@ -26,51 +40,94 @@ const Home = () => {
       description: user?.profile?.totalCost,
     },
   ];
+  const items: Array<Item> = [
+    {
+      name: "Item name",
+      cost: 9.95,
+      price: 15.99,
+      id: "buSGbeouaob",
+    },
+    {
+      name: "Item name",
+      cost: 9.95,
+      price: 15.99,
+      id: "oa9brh",
+    },
+    {
+      name: "Item name",
+      cost: 9.95,
+      price: 15.99,
+      id: "rurewv",
+    },
+    {
+      name: "Item name",
+      cost: 9.95,
+      price: 15.99,
+      id: "egwiub",
+    },
+    {
+      name: "Item name",
+      cost: 9.95,
+      price: 15.99,
+      id: "oeirhn",
+    },
+  ];
 
   const ProfileCard = (
-      <Grid padded stretched className="segment">
-        <Grid.Row divided stretched verticalAlign="middle" style={{
-          justifyContent:"space-evenly"
+    <Grid padded stretched className="segment" >
+      <Grid.Row
+        divided
+        stretched
+        verticalAlign="middle"
+        style={{
+          justifyContent: "space-evenly",
+        }}
+      >
+        <Grid.Column width={8} stretched textAlign="center" style={{
+          height: "100%"
         }}>
-          <Grid.Column width={8}>
-            <Container fluid>
-              <Header>{user?.username}</Header>
-              <Card.Description>
-                {"Joined " + moment(user?.profile?.createdAt).fromNow(false)}
-              </Card.Description>
-            </Container>
-          </Grid.Column>
+          <Container style={containerStyle}>
+            <Header>{user?.username}</Header>
+            <Card.Description>
+              {"Joined " + moment(user?.profile?.createdAt).fromNow(false)}
+            </Card.Description>
+          </Container>
 
-          <Grid.Column width={8}>
-            <Card.Group centered items={items} />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+          <Container style={containerStyle}>
+            <Button>Add an item</Button>
+          </Container>
+        </Grid.Column>
+
+        <Grid.Column width={8}>
+          <Card.Group centered items={info} />
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   );
 
   const ItemsDisplay = (
-    <Card fluid raised>
-      <CardContent>
-        <Card.Header>{user?.username}</Card.Header>
-        <Card.Meta>{moment(user?.createdAt).fromNow(false)}</Card.Meta>
-        <Card.Description>
-          <Card.Group centered items={items} />
-        </Card.Description>
-      </CardContent>
-    </Card>
+    <Container>
+      <Grid stretched padded>
+        <Grid.Row>
+          <div className="ui centered cards">
+            {items.map((itm) => (
+              <Card
+                header={itm.name}
+                description={itm.price}
+                meta={itm.cost}
+                key={itm.id}
+              />
+            ))}
+          </div>
+        </Grid.Row>
+      </Grid>
+    </Container>
   );
 
   const home = (
     <Container fluid>
       {ProfileCard}
-      <Grid stretched>
-        {/* <Grid.Row>
-          <Container className="segment" fluid textAlign="center">
-            {ProfileCard}
-          </Container>
-        </Grid.Row> */}
-        <Grid.Row>{ItemsDisplay}</Grid.Row>
-      </Grid>
+      {ItemsDisplay}
     </Container>
   );
   return user ? home : redirect;
