@@ -10,8 +10,8 @@ export interface Item {
   name: string;
   price: number;
   cost: number;
-  createdAt: string;
-  username: string;
+  createdAt?: string;
+  username?: string;
 }
 
 export interface User {
