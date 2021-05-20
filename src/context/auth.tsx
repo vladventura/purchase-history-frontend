@@ -1,7 +1,7 @@
 import { createContext, useReducer } from "react";
 import jwtDecode from "jwt-decode";
 import { JWT_TOKEN_KEY } from "../constants";
-import { User, UserProfile } from "../graphql/schemas";
+import { User } from "../graphql/schemas";
 import { UserMutation } from "../graphql/mutations";
 
 // This is the expected result from jwtDecode
