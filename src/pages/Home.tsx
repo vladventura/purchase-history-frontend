@@ -28,44 +28,24 @@ const Home = () => {
   ];
 
   const ProfileCard = (
-    // {console.log(user)}
-    // <Card fluid raised>
-    //   <CardContent>
-    //     <Card.Header>{user?.username}</Card.Header>
-    //     <Card.Meta>{moment(user?.createdAt).fromNow(false)}</Card.Meta>
-    //     <Card.Description>
-    //       <Card.Group centered items={items} />
-    //     </Card.Description>
-    //   </CardContent>
-    // </Card>
-    <Container className="segment">
-      <Grid padded stretched>
-        <Grid.Column width={8}>
-          <Grid.Row>
-            <Container centered>
-              <Header>Username</Header>
-              <Card.Description>a few seconds ago</Card.Description>
+      <Grid padded stretched className="segment">
+        <Grid.Row divided stretched verticalAlign="middle" style={{
+          justifyContent:"space-evenly"
+        }}>
+          <Grid.Column width={8}>
+            <Container fluid>
+              <Header>{user?.username}</Header>
+              <Card.Description>
+                {"Joined " + moment(user?.profile?.createdAt).fromNow(false)}
+              </Card.Description>
             </Container>
-            {/* <Header floated="left">{user?.username}</Header>
-            <Header floated="left" className="meta">
-            Woah
-          </Header> */}
-          </Grid.Row>
-        </Grid.Column>
-        <Grid.Column width={8}>
-          <Grid.Row>
-            <Container centered>
-              <Header>Username</Header>
-              <Card.Description>a few seconds ago</Card.Description>
-            </Container>
-            {/* <Header floated="left">{user?.username}</Header>
-            <Header floated="left" className="meta">
-            Woah
-          </Header> */}
-          </Grid.Row>
-        </Grid.Column>
+          </Grid.Column>
+
+          <Grid.Column width={8}>
+            <Card.Group centered items={items} />
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
-    </Container>
   );
 
   const ItemsDisplay = (
@@ -81,16 +61,17 @@ const Home = () => {
   );
 
   const home = (
-    <Grid stretched centered padded>
-      <Grid.Column>
-        <Grid.Row>
-          <Grid.Column>
-            <Container textAlign="center">{ProfileCard}</Container>
-          </Grid.Column>
-        </Grid.Row>
+    <Container fluid>
+      {ProfileCard}
+      <Grid stretched>
+        {/* <Grid.Row>
+          <Container className="segment" fluid textAlign="center">
+            {ProfileCard}
+          </Container>
+        </Grid.Row> */}
         <Grid.Row>{ItemsDisplay}</Grid.Row>
-      </Grid.Column>
-    </Grid>
+      </Grid>
+    </Container>
   );
   return user ? home : redirect;
 };
