@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
-import { Button, Card, Container, Grid, Header } from "semantic-ui-react";
-import moment from "moment";
+import { Card, Container, Grid } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import "./Home.css";
 import { Item } from "../graphql/schemas";
@@ -10,30 +9,6 @@ const Home = () => {
   const { user } = useContext(AuthContext);
   const redirect = <Redirect to="/login" />;
 
-  const containerStyle = {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  };
-
-  // Should parse this from the user incoming from the context
-  const info = [
-    {
-      header: "Items added",
-      meta: "",
-      description: user?.profile?.totalAddedItems,
-    },
-    {
-      header: "Price paid",
-      meta: "",
-      description: user?.profile?.totalPrice,
-    },
-    {
-      header: "Current cost",
-      meta: "",
-      description: user?.profile?.totalCost,
-    },
-  ];
   const items: Array<Item> = [
     {
       name: "Item name",
@@ -88,7 +63,7 @@ const Home = () => {
 
   const home = (
     <Container fluid>
-      <ProfileBanner user={user}/>
+      <ProfileBanner user={user} />
       {ItemsDisplay}
     </Container>
   );
