@@ -1,13 +1,6 @@
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
-import {
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  Header,
-} from "semantic-ui-react";
+import { Button, Card, Container, Grid, Header } from "semantic-ui-react";
 import moment from "moment";
 import { AuthContext } from "../context/auth";
 import "./Home.css";
@@ -19,8 +12,8 @@ const Home = () => {
   const containerStyle = {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  };
 
   // Should parse this from the user incoming from the context
   const info = [
@@ -74,7 +67,7 @@ const Home = () => {
   ];
 
   const ProfileCard = (
-    <Grid padded stretched className="segment" >
+    <Grid padded stretched className="segment">
       <Grid.Row
         divided
         stretched
@@ -83,9 +76,14 @@ const Home = () => {
           justifyContent: "space-evenly",
         }}
       >
-        <Grid.Column width={8} stretched textAlign="center" style={{
-          height: "100%"
-        }}>
+        <Grid.Column
+          width={8}
+          stretched
+          textAlign="center"
+          style={{
+            height: "100%",
+          }}
+        >
           <Container style={containerStyle}>
             <Header>{user?.username}</Header>
             <Card.Description>
