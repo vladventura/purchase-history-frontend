@@ -5,6 +5,7 @@ import moment from "moment";
 import { AuthContext } from "../context/auth";
 import "./Home.css";
 import { Item } from "../graphql/schemas";
+import { ProfileBanner } from "../components/ProfileBanner";
 const Home = () => {
   const { user } = useContext(AuthContext);
   const redirect = <Redirect to="/login" />;
@@ -66,43 +67,6 @@ const Home = () => {
     },
   ];
 
-  const ProfileBanner = (
-    <Grid padded stretched className="segment">
-      <Grid.Row
-        divided
-        stretched
-        verticalAlign="middle"
-        style={{
-          justifyContent: "space-evenly",
-        }}
-      >
-        <Grid.Column
-          width={8}
-          stretched
-          textAlign="center"
-          style={{
-            height: "100%",
-          }}
-        >
-          <Container style={containerStyle}>
-            <Header>{user?.username}</Header>
-            <Card.Description>
-              {"Joined " + moment(user?.profile?.createdAt).fromNow(false)}
-            </Card.Description>
-          </Container>
-
-          <Container style={containerStyle}>
-            <Button>Add an item</Button>
-          </Container>
-        </Grid.Column>
-
-        <Grid.Column width={8}>
-          <Card.Group centered items={info} />
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-  );
-
   const ItemsDisplay = (
     <Container>
       <Grid stretched padded>
@@ -124,7 +88,7 @@ const Home = () => {
 
   const home = (
     <Container fluid>
-      {ProfileBanner}
+      <ProfileBanner user={user}/>
       {ItemsDisplay}
     </Container>
   );
