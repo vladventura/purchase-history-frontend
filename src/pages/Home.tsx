@@ -66,7 +66,7 @@ const Home = () => {
     },
   ];
 
-  const ProfileCard = (
+  const ProfileBanner = (
     <Grid padded stretched className="segment">
       <Grid.Row
         divided
@@ -124,7 +124,7 @@ const Home = () => {
 
   const home = (
     <Container fluid>
-      {ProfileCard}
+      {ProfileBanner}
       {ItemsDisplay}
     </Container>
   );
