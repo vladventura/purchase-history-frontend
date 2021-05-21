@@ -1,0 +1,13 @@
+.profile-banner-row {
+  justify-content: space-evenly!important;
+}
+
+.profile-banner > .row > .column {
+  height: 100%;
+}
+
+.profile-banner > .row > .column > .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
