@@ -8,6 +8,18 @@ export type UserMutation = {
   };
 };
 
+export const ADD_ITEM_MUTATION = gql`
+  mutation ($name: String!, $price: Float!, $cost: Float!) {
+    addItem(name: $name, price: $price, cost: $cost) {
+      id
+      name
+      price
+      cost
+      createdAt
+    }
+  }
+`
+
 export const REGISTER_USER_MUTATION = gql`
   mutation (
     $username: String!
