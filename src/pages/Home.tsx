@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
-import "./Home.css";
 import { Item } from "../graphql/schemas";
 import { ProfileBanner } from "../components/ProfileBanner";
 import { ItemsDisplay } from "../components/ItemsDisplay";
