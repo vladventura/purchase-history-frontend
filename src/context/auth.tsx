@@ -25,8 +25,13 @@ if (localStorage.getItem(JWT_TOKEN_KEY)) {
   const decoded: Jwtitem = jwtDecode(
     localStorage.getItem(JWT_TOKEN_KEY) as any
   );
-  if (decoded.exp * 1000 < Date.now()) localStorage.removeItem(JWT_TOKEN_KEY);
-  else initState.user = decoded;
+  if (decoded.exp * 1000 < Date.now()) {
+    localStorage.removeItem("userProfile");
+    localStorage.removeItem(JWT_TOKEN_KEY);
+  } else {
+    const profile = JSON.parse(localStorage.getItem("userProfile" || "") ?? "");
+    initState.user = { ...decoded, profile };
+  }
 }
 
 const AuthContext = createContext({
@@ -49,13 +54,19 @@ function authReducer(state: State, action: { type: string; payload?: any }) {
 function AuthProvider(props: Object) {
   const [state, dispatch] = useReducer(authReducer, initState);
   const login = (userData: UserMutation) => {
+    console.log(userData);
     localStorage.setItem(
       JWT_TOKEN_KEY,
       userData.data.register?.token || userData.data.login?.token || ""
     );
+    const user = userData.data.register ?? userData.data.login;
+    // Save the profile here
+    const profile = user?.profile;
+    console.log(profile);
+    localStorage.setItem("userProfile", JSON.stringify(profile));
     dispatch({
       type: "LOGIN",
-      payload: userData,
+      payload: { ...user, profile },
     });
   };
   const logout = () => {

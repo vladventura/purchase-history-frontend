@@ -2,7 +2,7 @@ export interface UserProfile {
   totalCost?: number;
   totalPrice?: number;
   totalAddedItems?: number;
-  createdAt?: String;
+  createdAt?: string;
 }
 
 export interface Item {
@@ -10,8 +10,8 @@ export interface Item {
   name: string;
   price: number;
   cost: number;
-  createdAt: string;
-  username: string;
+  createdAt?: string;
+  username?: string;
 }
 
 export interface User {

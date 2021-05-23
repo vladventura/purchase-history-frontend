@@ -23,6 +23,8 @@ export const REGISTER_USER_MUTATION = gql`
     ) {
       id
       token
+      createdAt
+      username
       profile {
         totalCost
         totalPrice
@@ -37,10 +39,13 @@ export const LOGIN_USER_MUTATION = gql`
     login(username: $username, password: $password) {
       id
       token
+      username
+      createdAt
       profile {
         totalCost
         totalPrice
         totalAddedItems
+        createdAt
       }
     }
   }
