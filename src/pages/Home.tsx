@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
-import { Card, Container, Grid } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import "./Home.css";
 import { Item } from "../graphql/schemas";
 import { ProfileBanner } from "../components/ProfileBanner";
+import { ItemsDisplay } from "../components/ItemsDisplay";
 const Home = () => {
   const { user } = useContext(AuthContext);
   const redirect = <Redirect to="/login" />;
@@ -42,29 +43,10 @@ const Home = () => {
     },
   ];
 
-  const ItemsDisplay = (
-    <Container>
-      <Grid stretched padded>
-        <Grid.Row>
-          <div className="ui centered cards">
-            {items.map((itm) => (
-              <Card
-                header={itm.name}
-                description={itm.price}
-                meta={itm.cost}
-                key={itm.id}
-              />
-            ))}
-          </div>
-        </Grid.Row>
-      </Grid>
-    </Container>
-  );
-
   const home = (
     <Container fluid>
       <ProfileBanner user={user} />
-      {ItemsDisplay}
+      <ItemsDisplay items={items} />
     </Container>
   );
   return user ? home : redirect;
