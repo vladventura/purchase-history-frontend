@@ -44,6 +44,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
       const data: GetItemsQuery | null = proxy.readQuery({
         query: GET_ITEMS_QUERY,
       });
+      // TODO: Update the profile as well from here
       proxy.writeQuery({
         query: GET_ITEMS_QUERY,
         data: {
@@ -151,8 +152,14 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
             header="Items added"
             description={user?.profile?.totalAddedItems}
           />
-          <Card header="Price paid" description={user?.profile?.totalPrice} />
-          <Card header="Current cost" description={user?.profile?.totalCost} />
+          <Card
+            header="Price paid"
+            description={"$" + user?.profile?.totalPrice}
+          />
+          <Card
+            header="Current cost"
+            description={"$" + user?.profile?.totalCost}
+          />
         </Grid.Column>
       </Grid.Row>
       {showMessage && (
