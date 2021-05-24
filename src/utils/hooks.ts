@@ -22,9 +22,13 @@ function OnForm(callback: Function, initState: AuthFormType | ItemFormType) {
         e.preventDefault();
         callback();
     };
+    const clearValues = () => {
+        setValues(initState)
+    }
     return {
         onChange,
         onSubmit,
+        clearValues,
         values
     }
 }
