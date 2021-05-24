@@ -1,5 +1,5 @@
 .profile-banner-row {
-  justify-content: space-evenly!important;
+  justify-content: space-evenly !important;
 }
 
 .profile-banner > .row > .column {
@@ -7,7 +7,7 @@
 }
 
 .profile-banner > .row > .column > .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
