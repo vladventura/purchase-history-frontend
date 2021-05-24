@@ -1,6 +1,21 @@
+import { useMutation } from "@apollo/client";
 import moment from "moment";
-import { Button, Card, Container, Grid, Header } from "semantic-ui-react";
+import { useState } from "react";
+import {
+  Button,
+  Card,
+  Container,
+  Form,
+  Grid,
+  Header,
+  Message,
+  Modal,
+} from "semantic-ui-react";
+import { ItemErrorsType, ItemFormType } from "../../common/types";
+import { ADD_ITEM_MUTATION } from "../../graphql/mutations";
 import { User } from "../../graphql/schemas";
+import { OnForm } from "../../utils/hooks";
+import { ErrorsBlock } from "../ErrorsBlock";
 import "./index.css";
 
 type ProfileBannerProps = {
@@ -8,6 +23,47 @@ type ProfileBannerProps = {
 };
 
 const ProfileBanner = ({ user }: ProfileBannerProps) => {
+  const initState: ItemFormType = {
+    name: "",
+    price: 0.0,
+    cost: 0.0,
+  };
+  const [openModal, setOpenModal] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const { values, onChange, onSubmit, clearValues } = OnForm(
+    addAnItem,
+    initState
+  );
+  const [errors, setErrors] = useState({} as ItemErrorsType);
+
+  const [addItem, { loading }] = useMutation(ADD_ITEM_MUTATION, {
+    update: (_, result) => {
+      onModalClose();
+      onShowMessage();
+      // TODO: Use the proxy to add the received item to the cached query
+      console.log(result);
+    },
+    variables: values,
+    onError: (error) => {
+      const errs = error.graphQLErrors[0].extensions?.exception.errors;
+      console.log(errs);
+      setErrors(errs);
+    },
+  });
+
+  function onShowMessage() {
+    setShowMessage(true);
+    setTimeout(() => setShowMessage(false), 2000);
+  }
+
+  function onModalClose() {
+    setOpenModal(false);
+    clearValues();
+  }
+
+  function addAnItem() {
+    addItem();
+  }
 
   return (
     <Grid padded stretched className="segment profile-banner">
@@ -25,7 +81,60 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
             </Card.Description>
           </Container>
           <Container>
-            <Button>Add an item</Button>
+            <Modal
+              onClose={onModalClose}
+              onOpen={() => setOpenModal(true)}
+              open={openModal}
+              trigger={<Button primary>Add an item</Button>}
+            >
+              <Modal.Header>Add an item</Modal.Header>
+              <Modal.Content>
+                <Form
+                  onSubmit={onSubmit}
+                  noValidate
+                  className={"ui large form " + (loading ? "loading" : "")}
+                >
+                  <div className="ui segment">
+                    <Form.Input
+                      placeholder="Item Name"
+                      label="Item Name"
+                      name="name"
+                      onChange={onChange}
+                      value={(values as ItemFormType).name}
+                      error={errors.name ? true : false}
+                      iconPosition="left"
+                      icon={<i className="pencil alternate icon" />}
+                    />
+                    <Form.Input
+                      placeholder="What you paid for the item"
+                      label="What you paid for the item"
+                      name="price"
+                      onChange={onChange}
+                      value={(values as ItemFormType).price}
+                      error={errors.price ? true : false}
+                      type="number"
+                      iconPosition="left"
+                      icon={<i className="dollar sign icon" />}
+                    />
+                    <Form.Input
+                      placeholder="What it currently costs"
+                      label="What it currently costs"
+                      name="cost"
+                      onChange={onChange}
+                      value={(values as ItemFormType).cost}
+                      error={errors.cost ? true : false}
+                      type="number"
+                      iconPosition="left"
+                      icon={<i className="dollar sign icon" />}
+                    />
+                    <Button fluid type="submit" primary className="button">
+                      Save Item
+                    </Button>
+                  </div>
+                </Form>
+                <ErrorsBlock errors={errors} />
+              </Modal.Content>
+            </Modal>
           </Container>
         </Grid.Column>
 
@@ -34,16 +143,17 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
             header="Items added"
             description={user?.profile?.totalAddedItems}
           />
-          <Card
-            header="Price paid"
-            description={user?.profile?.totalPrice}
-          />
-          <Card
-            header="Current cost"
-            description={user?.profile?.totalCost}
-          />
+          <Card header="Price paid" description={user?.profile?.totalPrice} />
+          <Card header="Current cost" description={user?.profile?.totalCost} />
         </Grid.Column>
       </Grid.Row>
+      {showMessage && (
+        <Grid.Row centered>
+          <Message floating positive>
+            Item Added succesfully!
+          </Message>
+        </Grid.Row>
+      )}
     </Grid>
   );
 };

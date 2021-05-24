@@ -5,7 +5,8 @@ import { AuthContext } from "../context/auth";
 import { LOGIN_USER_MUTATION } from "../graphql/mutations";
 import { OnForm } from "../utils/hooks";
 import { UserMutation } from "../graphql/mutations";
-import { FormErrorsType } from "../common/types";
+import { AuthFormType, FormErrorsType } from "../common/types";
+import { ErrorsBlock } from "../components/ErrorsBlock";
 
 const Login = (props: any) => {
   const initState = {
@@ -14,7 +15,6 @@ const Login = (props: any) => {
   };
 
   const { values, onChange, onSubmit } = OnForm(registerUser, initState);
-
 
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({} as FormErrorsType);
@@ -51,7 +51,7 @@ const Login = (props: any) => {
               placeholder="Username"
               name="username"
               onChange={onChange}
-              value={values.username}
+              value={(values as AuthFormType).username}
               error={errors.username ? true : false}
               iconPosition="left"
               icon={<i className="user icon" />}
@@ -60,7 +60,7 @@ const Login = (props: any) => {
               placeholder="Password"
               name="password"
               onChange={onChange}
-              value={values.password}
+              value={(values as AuthFormType).password}
               error={errors.password ? true : false}
               type="password"
               iconPosition="left"
@@ -71,15 +71,7 @@ const Login = (props: any) => {
             </Button>
           </div>
         </Form>
-        {Object.keys(errors).length > 0 && (
-          <div className="ui error message">
-            <ul className="list">
-              {Object.values(errors).map((error: any) => (
-                <li key={error}>{error}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <ErrorsBlock errors={errors} />
         <div className="ui message">
           Don't have an account yet? <a href="/register"> Make a new one!</a>
         </div>
