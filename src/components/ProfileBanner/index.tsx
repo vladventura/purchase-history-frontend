@@ -89,8 +89,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
                       value={(values as ItemFormType).name}
                       error={errors.name ? true : false}
                       iconPosition="left"
-                      // TODO: Get a better icon for this btw
-                      icon={<i className="user icon" />}
+                      icon={<i className="pencil alternate icon" />}
                     />
                     <Form.Input
                       placeholder="What you paid for the item"
@@ -99,11 +98,9 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
                       onChange={onChange}
                       value={(values as ItemFormType).price}
                       error={errors.price ? true : false}
-                      // TODO: Get a numeric input type, I think this derived from html input
                       type="number"
                       iconPosition="left"
-                      // TODO: Get a better icon for this btw
-                      icon={<i className="lock icon" />}
+                      icon={<i className="dollar sign icon" />}
                     />
                     <Form.Input
                       placeholder="What it currently costs"
@@ -112,11 +109,9 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
                       onChange={onChange}
                       value={(values as ItemFormType).cost}
                       error={errors.cost ? true : false}
-                      // TODO: Get a numeric input type, I think this derived from html input
                       type="number"
                       iconPosition="left"
-                      // TODO: Get a better icon for this btw
-                      icon={<i className="lock icon" />}
+                      icon={<i className="dollar sign icon" />}
                     />
                     <Button fluid type="submit" primary className="button">
                       Save Item
