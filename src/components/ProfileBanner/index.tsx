@@ -38,9 +38,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
 
   const [addItem, { loading }] = useMutation(ADD_ITEM_MUTATION, {
     update: (_, result) => {
-      // TODO: Close modal
       onModalClose();
-      // TODO: Show Item Saved successfully
       onShowMessage();
       // TODO: Use the proxy to add the received item to the cached query
       console.log(result);
@@ -84,8 +82,6 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
           </Container>
           <Container>
             <Modal
-              // TODO: Clear the inputs here. Maybe save init state and return something to clear it
-              // from the hook
               onClose={onModalClose}
               onOpen={() => setOpenModal(true)}
               open={openModal}
