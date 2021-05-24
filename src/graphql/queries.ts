@@ -1,4 +1,5 @@
 import gql from "graphql-tag"
+import { Item } from "./schemas";
 
 export const GET_ITEMS_QUERY = gql`
     query {
@@ -11,3 +12,7 @@ export const GET_ITEMS_QUERY = gql`
         }
     }
 `;
+
+export type GetItemsQuery = {
+    getItems?: [Item] | null;
+}
