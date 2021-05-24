@@ -14,5 +14,5 @@ export const GET_ITEMS_QUERY = gql`
 `;
 
 export type GetItemsQuery = {
-    getItems?: [Item] | null;
+    getItems?: [Item];
 }
