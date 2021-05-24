@@ -71,6 +71,7 @@ function AuthProvider(props: Object) {
   };
   const logout = () => {
     localStorage.removeItem(JWT_TOKEN_KEY);
+    localStorage.removeItem("userProfile");
     dispatch({
       type: "LOGOUT",
     });
