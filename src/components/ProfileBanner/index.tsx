@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import moment from "moment";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Button,
   Card,
@@ -12,6 +12,7 @@ import {
   Modal,
 } from "semantic-ui-react";
 import { ItemErrorsType, ItemFormType } from "../../common/types";
+import { AuthContext } from "../../context/auth";
 import { ADD_ITEM_MUTATION } from "../../graphql/mutations";
 import { GetItemsQuery, GET_ITEMS_QUERY } from "../../graphql/queries";
 import { Item, User } from "../../graphql/schemas";
@@ -36,6 +37,8 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
     initState
   );
   const [errors, setErrors] = useState({} as ItemErrorsType);
+
+  const { logout } = useContext(AuthContext);
 
   const [addItem, { loading }] = useMutation(ADD_ITEM_MUTATION, {
     update: (proxy, result) => {
@@ -76,6 +79,15 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
 
   return (
     <Grid padded stretched className="segment profile-banner">
+      <Grid.Row
+        style={{
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button onClick={logout} floated="right" basic color="red">
+          Log out
+        </Button>
+      </Grid.Row>
       <Grid.Row
         className="profile-banner-row"
         divided
