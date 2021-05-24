@@ -6,6 +6,7 @@ import { REGISTER_USER_MUTATION } from "../graphql/mutations";
 import { OnForm } from "../utils/hooks";
 import { UserMutation } from "../graphql/mutations";
 import { AuthFormType, FormErrorsType } from "../common/types";
+import { ErrorsBlock } from "../components/ErrorsBlock";
 
 const Register = (props: any) => {
   const initState = {
@@ -91,15 +92,7 @@ const Register = (props: any) => {
             </Button>
           </div>
         </Form>
-        {Object.keys(errors).length > 0 && (
-          <div className="ui error message">
-            <ul className="list">
-              {Object.values(errors).map((error: any) => (
-                <li key={error}>{error}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <ErrorsBlock errors={errors} />
         <div className="ui message">
           Have an account already? <a href="/login"> Sign in!</a>
         </div>
