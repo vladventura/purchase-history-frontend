@@ -22,12 +22,16 @@ type ProfileBannerProps = {
 };
 
 const ProfileBanner = ({ user }: ProfileBannerProps) => {
-  const [openModal, setOpenModal] = useState(false);
-  const { values, onChange, onSubmit } = OnForm(addAnItem, {
+  const initState: ItemFormType = {
     name: "",
     price: 0.0,
     cost: 0.0,
-  } as ItemFormType);
+  };
+  const [openModal, setOpenModal] = useState(false);
+  const { values, onChange, onSubmit, clearValues } = OnForm(
+    addAnItem,
+    initState
+  );
   const [errors, setErrors] = useState({} as ItemErrorsType);
 
   const [addItem, { loading }] = useMutation(ADD_ITEM_MUTATION, {
@@ -44,6 +48,11 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
       setErrors(errs);
     },
   });
+
+  const onModalClose = () => {
+    setOpenModal(false);
+    clearValues();
+  };
 
   function addAnItem() {
     addItem();
@@ -68,7 +77,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
             <Modal
               // TODO: Clear the inputs here. Maybe save init state and return something to clear it
               // from the hook
-              onClose={() => setOpenModal(false)}
+              onClose={onModalClose}
               onOpen={() => setOpenModal(true)}
               open={openModal}
               trigger={<Button>Add an item</Button>}
