@@ -5,7 +5,7 @@ import { AuthContext } from "../context/auth";
 import { REGISTER_USER_MUTATION } from "../graphql/mutations";
 import { OnForm } from "../utils/hooks";
 import { UserMutation } from "../graphql/mutations";
-import { FormErrorsType } from "../common/types";
+import { AuthFormType, FormErrorsType } from "../common/types";
 
 const Register = (props: any) => {
   const initState = {
@@ -52,7 +52,7 @@ const Register = (props: any) => {
               placeholder="Username"
               name="username"
               onChange={onChange}
-              value={values.username}
+              value={(values as AuthFormType).username}
               error={errors.username ? true : false}
               iconPosition="left"
               icon={<i className="user icon" />}
@@ -61,7 +61,7 @@ const Register = (props: any) => {
               placeholder="Email"
               name="email"
               onChange={onChange}
-              value={values.email}
+              value={(values as AuthFormType).email}
               error={errors.email ? true : false}
               iconPosition="left"
               icon={<i className="mail icon" />}
@@ -70,7 +70,7 @@ const Register = (props: any) => {
               placeholder="Password"
               name="password"
               onChange={onChange}
-              value={values.password}
+              value={(values as AuthFormType).password}
               error={errors.password ? true : false}
               type="password"
               iconPosition="left"
@@ -79,7 +79,7 @@ const Register = (props: any) => {
             <Form.Input
               onChange={onChange}
               name="confirmPassword"
-              value={values.confirmPassword}
+              value={(values as AuthFormType).confirmPassword}
               type="password"
               error={errors.confirmPassword ? true : false}
               placeholder="Confirm Password"
