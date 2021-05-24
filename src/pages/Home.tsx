@@ -45,7 +45,7 @@ const Home = () => {
   const home = (
     <Container fluid>
       <ProfileBanner user={user} />
-      <ItemsDisplay items={items} />
+      <ItemsDisplay items={items} loading={false} />
     </Container>
   );
   return user ? home : redirect;
