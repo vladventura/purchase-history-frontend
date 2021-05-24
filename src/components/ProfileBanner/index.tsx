@@ -8,6 +8,7 @@ import {
   Form,
   Grid,
   Header,
+  Message,
   Modal,
 } from "semantic-ui-react";
 import { ItemErrorsType, ItemFormType } from "../../common/types";
@@ -28,6 +29,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
     cost: 0.0,
   };
   const [openModal, setOpenModal] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
   const { values, onChange, onSubmit, clearValues } = OnForm(
     addAnItem,
     initState
@@ -36,10 +38,12 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
 
   const [addItem, { loading }] = useMutation(ADD_ITEM_MUTATION, {
     update: (_, result) => {
-      console.log(result);
       // TODO: Close modal
+      onModalClose();
       // TODO: Show Item Saved successfully
+      onShowMessage();
       // TODO: Use the proxy to add the received item to the cached query
+      console.log(result);
     },
     variables: values,
     onError: (error) => {
@@ -49,10 +53,15 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
     },
   });
 
-  const onModalClose = () => {
+  function onShowMessage() {
+    setShowMessage(true);
+    setTimeout(() => setShowMessage(false), 2000);
+  }
+
+  function onModalClose() {
     setOpenModal(false);
     clearValues();
-  };
+  }
 
   function addAnItem() {
     addItem();
@@ -142,6 +151,13 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
           <Card header="Current cost" description={user?.profile?.totalCost} />
         </Grid.Column>
       </Grid.Row>
+      {showMessage && (
+        <Grid.Row centered>
+          <Message floating positive>
+            Item Added succesfully!
+          </Message>
+        </Grid.Row>
+      )}
     </Grid>
   );
 };
