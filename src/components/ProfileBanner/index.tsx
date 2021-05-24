@@ -89,7 +89,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
               onClose={onModalClose}
               onOpen={() => setOpenModal(true)}
               open={openModal}
-              trigger={<Button>Add an item</Button>}
+              trigger={<Button primary>Add an item</Button>}
             >
               <Modal.Header>Add an item</Modal.Header>
               <Modal.Content>
