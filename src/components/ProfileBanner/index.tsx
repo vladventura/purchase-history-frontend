@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import moment from "moment";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Button,
   Card,
@@ -12,6 +12,7 @@ import {
   Modal,
 } from "semantic-ui-react";
 import { ItemErrorsType, ItemFormType } from "../../common/types";
+import { AuthContext } from "../../context/auth";
 import { ADD_ITEM_MUTATION } from "../../graphql/mutations";
 import { GetItemsQuery, GET_ITEMS_QUERY } from "../../graphql/queries";
 import { Item, User } from "../../graphql/schemas";
@@ -36,6 +37,8 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
     initState
   );
   const [errors, setErrors] = useState({} as ItemErrorsType);
+
+  const { logout } = useContext(AuthContext);
 
   const [addItem, { loading }] = useMutation(ADD_ITEM_MUTATION, {
     update: (proxy, result) => {
@@ -82,7 +85,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
         stretched
         verticalAlign="middle"
       >
-        <Grid.Column width={8} textAlign="center">
+        <Grid.Column width={6} textAlign="center">
           <Container>
             <Header>{user?.username}</Header>
             <Card.Description>
@@ -147,19 +150,30 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
           </Container>
         </Grid.Column>
 
-        <Grid.Column width={8}>
-          <Card
-            header="Items added"
-            description={user?.profile?.totalAddedItems}
-          />
-          <Card
-            header="Price paid"
-            description={"$" + user?.profile?.totalPrice}
-          />
-          <Card
-            header="Current cost"
-            description={"$" + user?.profile?.totalCost}
-          />
+        <Grid.Column width={6}>
+          <Grid.Row>
+            <Grid.Column>
+              <Card
+                header="Items added"
+                description={user?.profile?.totalAddedItems}
+              />
+              <Card
+                header="Price paid"
+                description={"$" + user?.profile?.totalPrice}
+              />
+              <Card
+                header="Current cost"
+                description={"$" + user?.profile?.totalCost}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid.Column>
+        <Grid.Column width={4}>
+          <Container>
+            <Button onClick={logout} floated="right" basic color="red">
+              Log out
+            </Button>
+          </Container>
         </Grid.Column>
       </Grid.Row>
       {showMessage && (
