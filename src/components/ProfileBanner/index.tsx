@@ -13,7 +13,8 @@ import {
 } from "semantic-ui-react";
 import { ItemErrorsType, ItemFormType } from "../../common/types";
 import { ADD_ITEM_MUTATION } from "../../graphql/mutations";
-import { User } from "../../graphql/schemas";
+import { GetItemsQuery, GET_ITEMS_QUERY } from "../../graphql/queries";
+import { Item, User } from "../../graphql/schemas";
 import { OnForm } from "../../utils/hooks";
 import { ErrorsBlock } from "../ErrorsBlock";
 import "./index.css";
@@ -37,16 +38,23 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
   const [errors, setErrors] = useState({} as ItemErrorsType);
 
   const [addItem, { loading }] = useMutation(ADD_ITEM_MUTATION, {
-    update: (_, result) => {
+    update: (proxy, result) => {
       onModalClose();
       onShowMessage();
-      // TODO: Use the proxy to add the received item to the cached query
-      console.log(result);
+      const data: GetItemsQuery | null = proxy.readQuery({
+        query: GET_ITEMS_QUERY,
+      });
+      proxy.writeQuery({
+        query: GET_ITEMS_QUERY,
+        data: {
+          ...data,
+          getItems: [result.data?.addItem, ...(data?.getItems as [Item])],
+        },
+      });
     },
     variables: values,
     onError: (error) => {
       const errs = error.graphQLErrors[0].extensions?.exception.errors;
-      console.log(errs);
       setErrors(errs);
     },
   });
