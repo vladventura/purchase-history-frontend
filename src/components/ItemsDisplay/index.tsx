@@ -11,7 +11,7 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
     <Container>
       <Grid stretched padded>
         {loading ? (
-          <Loader active center />
+          <Loader active />
         ) : (
           <Grid.Row>
             <div className="ui centered cards">
