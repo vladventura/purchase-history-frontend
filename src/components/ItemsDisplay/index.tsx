@@ -1,4 +1,4 @@
-import { Card, Container, Grid, Loader } from "semantic-ui-react";
+import { Card, Container, Grid, Loader, Transition } from "semantic-ui-react";
 import { Item } from "../../graphql/schemas";
 
 type ItemsDisplayProps = {
@@ -15,14 +15,16 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
         ) : (
           <Grid.Row>
             <div className="ui centered cards">
-              {items?.map((item) => (
-                <Card
-                  header={item.name}
-                  description={"Paid $" + item.price}
-                  meta={"Current cost $" + item.cost}
-                  key={item.id}
-                />
-              ))}
+              <Transition.Group>
+                {items?.map((item) => (
+                  <Card
+                    header={item.name}
+                    description={"Paid $" + item.price}
+                    meta={"Current cost $" + item.cost}
+                    key={item.id}
+                  />
+                ))}
+              </Transition.Group>
             </div>
           </Grid.Row>
         )}
