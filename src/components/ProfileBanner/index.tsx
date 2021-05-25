@@ -38,7 +38,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
   );
   const [errors, setErrors] = useState({} as ItemErrorsType);
 
-  const { logout } = useContext(AuthContext);
+  const { logout, addItem: addItemAction } = useContext(AuthContext);
 
   const [addItem, { loading }] = useMutation(ADD_ITEM_MUTATION, {
     update: (proxy, result) => {
@@ -47,7 +47,6 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
       const data: GetItemsQuery | null = proxy.readQuery({
         query: GET_ITEMS_QUERY,
       });
-      // TODO: Update the profile as well from here
       proxy.writeQuery({
         query: GET_ITEMS_QUERY,
         data: {
@@ -55,6 +54,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
           getItems: [result.data?.addItem, ...(data?.getItems as [Item])],
         },
       });
+      addItemAction(result.data?.addItem as Item);
     },
     variables: values,
     onError: (error) => {
