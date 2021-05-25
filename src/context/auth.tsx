@@ -13,6 +13,8 @@ interface State {
   login: (userData: UserMutation) => void;
   logout: () => void;
   addItem: (item: Item) => void;
+  removeItem: (item: Item) => void;
+  editItem: (oldItem: Item, newItem: Item) => void;
 }
 
 // This is like a replacement of Redux
@@ -21,6 +23,8 @@ const initState: State = {
   login: (userData: UserMutation) => {},
   logout: () => {},
   addItem: (item) => {},
+  removeItem: (item) => {},
+  editItem: (oldItem, newItem) => {},
 };
 
 if (localStorage.getItem(JWT_TOKEN_KEY)) {
@@ -43,6 +47,8 @@ const AuthContext = createContext({
   login: (userData: UserMutation) => {},
   logout: () => {},
   addItem: (item) => {},
+  removeItem: (item) => {},
+  editItem: (oldItem, newItem) => {},
 } as State);
 
 function authReducer(state: State, action: { type: string; payload?: any }) {
@@ -123,9 +129,51 @@ function AuthProvider(props: Object) {
       payload: newProfile,
     });
   };
+
+  const removeItem = (item: Item) => {
+    const localStorageProfile =
+      JSON.parse(localStorage.getItem("userProfile") || "") ??
+      ({} as UserProfile);
+
+    const newProfile = {
+      totalPrice: localStorageProfile?.totalPrice - item.price,
+      totalCost: localStorageProfile?.totalCost - item.cost,
+      totalAddedItems: localStorageProfile?.totalAddedItems - 1,
+    };
+
+    localStorage.setItem("userProfile", JSON.stringify(newProfile));
+
+    dispatch({
+      type: "REMOVE_ITEM",
+      payload: newProfile,
+    });
+  };
+
+  const editItem = (oldItem: Item, newItem: Item) => {
+    const localStorageProfile =
+      JSON.parse(localStorage.getItem("userProfile") || "") ??
+      ({} as UserProfile);
+
+    const newProfile = {
+      totalPrice:
+        localStorageProfile?.totalPrice +
+        Math.abs(oldItem.price - newItem.price),
+      totalCost:
+        localStorageProfile?.totalCost + Math.abs(oldItem.cost - newItem.cost),
+      totalAddedItems: localStorageProfile?.totalAddedItems,
+    };
+
+    localStorage.setItem("userProfile", JSON.stringify(newProfile));
+
+    dispatch({
+      type: "EDIT_ITEM",
+      payload: newProfile,
+    });
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user: state.user, login, logout, addItem }}
+      value={{ user: state.user, login, logout, addItem, removeItem, editItem }}
       {...props}
     />
   );
