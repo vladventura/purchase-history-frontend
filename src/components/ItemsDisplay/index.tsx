@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client";
 import {
   Card,
   Container,
@@ -6,6 +7,8 @@ import {
   Loader,
   Transition,
 } from "semantic-ui-react";
+import { DELETE_ITEM_MUTATION } from "../../graphql/mutations";
+import { GET_ITEMS_QUERY } from "../../graphql/queries";
 import { Item } from "../../graphql/schemas";
 
 type ItemsDisplayProps = {
@@ -14,6 +17,15 @@ type ItemsDisplayProps = {
 };
 
 const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
+  const [deleteItem, { loading: loadingMutation }] = useMutation(
+    DELETE_ITEM_MUTATION,
+    {
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
+
   return (
     <Container>
       <Grid stretched padded>
@@ -34,7 +46,39 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
                         <Button basic color="blue">
                           Edit
                         </Button>
-                        <Button basic color="red">
+                        <Button
+                          basic
+                          color="red"
+                          onClick={(_) =>
+                            deleteItem({
+                              variables: { itemId: item.id },
+                              update: (proxy) => {
+                                console.log(proxy);
+                                const data = proxy.readQuery({
+                                  query: GET_ITEMS_QUERY,
+                                }) as { getItems: [Item] };
+                                console.log(
+                                  proxy.readQuery({ query: GET_ITEMS_QUERY })
+                                );
+                                data.getItems.filter((itm) => {
+                                  console.log(itm.id);
+                                  return true;
+                                });
+                                proxy.writeQuery({
+                                  query: GET_ITEMS_QUERY,
+                                  data: {
+                                    ...data,
+                                    getItems: [
+                                      ...data.getItems.filter(
+                                        (itm) => itm.id !== item.id
+                                      ),
+                                    ],
+                                  },
+                                });
+                              },
+                            })
+                          }
+                        >
                           Delete
                         </Button>
                       </div>
