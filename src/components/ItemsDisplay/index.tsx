@@ -10,6 +10,8 @@ import {
 import { DELETE_ITEM_MUTATION } from "../../graphql/mutations";
 import { GET_ITEMS_QUERY } from "../../graphql/queries";
 import { Item } from "../../graphql/schemas";
+import { AuthContext } from "../../context/auth";
+import { useContext } from "react";
 
 type ItemsDisplayProps = {
   items?: Array<Item> | null;
@@ -25,6 +27,7 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
       },
     }
   );
+  const { removeItem } = useContext(AuthContext);
 
   return (
     <Container>
@@ -75,6 +78,7 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
                                     ],
                                   },
                                 });
+                                removeItem(item);
                               },
                             })
                           }
