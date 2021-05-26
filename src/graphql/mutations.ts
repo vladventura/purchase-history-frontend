@@ -20,6 +20,12 @@ export const ADD_ITEM_MUTATION = gql`
   }
 `
 
+export const DELETE_ITEM_MUTATION = gql`
+  mutation ($itemId: ID!){
+    deleteItem(itemId: $itemId)
+  }
+`;
+
 export const REGISTER_USER_MUTATION = gql`
   mutation (
     $username: String!
