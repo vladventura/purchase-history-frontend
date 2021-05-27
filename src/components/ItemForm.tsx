@@ -26,7 +26,10 @@ export const ItemForm = ({ item, modalClose, messageShow }: ItemFormProps) => {
 
   const [errors, setErrors] = useState({} as ItemErrorsType);
 
-  const { onSubmit, values, onChange } = OnForm(editOrAddItem, initState);
+  const { onSubmit, values, onChange, clearValues } = OnForm(
+    editOrAddItem,
+    initState
+  );
 
   const { addItem, editItem } = useContext(AuthContext);
 
@@ -67,6 +70,7 @@ export const ItemForm = ({ item, modalClose, messageShow }: ItemFormProps) => {
         },
       });
       editItem(item!, newItem);
+      clearValues();
     }
     modalClose?.();
     messageShow?.();
@@ -134,46 +138,3 @@ export const ItemForm = ({ item, modalClose, messageShow }: ItemFormProps) => {
     </>
   );
 };
-
-{
-  /* 
-
-<div className="ui segment">
-  <Form.Input
-    placeholder="Item Name"
-    label="Item Name"
-    name="name"
-    onChange={onChange}
-    value={(values as ItemFormType).name}
-    error={errors.name ? true : false}
-    iconPosition="left"
-    icon={<i className="pencil alternate icon" />}
-  />
-  <Form.Input
-    placeholder="What you paid for the item"
-    label="What you paid for the item"
-    name="price"
-    onChange={onChange}
-    value={(values as ItemFormType).price}
-    error={errors.price ? true : false}
-    type="number"
-    iconPosition="left"
-    icon={<i className="dollar sign icon" />}
-  />
-  <Form.Input
-    placeholder="What it currently costs"
-    label="What it currently costs"
-    name="cost"
-    onChange={onChange}
-    value={(values as ItemFormType).cost}
-    error={errors.cost ? true : false}
-    type="number"
-    iconPosition="left"
-    icon={<i className="dollar sign icon" />}
-  />
-  <Button fluid type="submit" primary className="button">
-    Save Item
-  </Button>
-</div>
-</Form> */
-}
