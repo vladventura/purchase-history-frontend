@@ -18,6 +18,7 @@ import { GetItemsQuery, GET_ITEMS_QUERY } from "../../graphql/queries";
 import { Item, User } from "../../graphql/schemas";
 import { OnForm } from "../../utils/hooks";
 import { ErrorsBlock } from "../ErrorsBlock";
+import { ItemForm } from "../ItemForm";
 import "./index.css";
 
 type ProfileBannerProps = {
@@ -101,50 +102,10 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
             >
               <Modal.Header>Add an item</Modal.Header>
               <Modal.Content>
-                <Form
-                  onSubmit={onSubmit}
-                  noValidate
-                  className={"ui large form " + (loading ? "loading" : "")}
-                >
-                  <div className="ui segment">
-                    <Form.Input
-                      placeholder="Item Name"
-                      label="Item Name"
-                      name="name"
-                      onChange={onChange}
-                      value={(values as ItemFormType).name}
-                      error={errors.name ? true : false}
-                      iconPosition="left"
-                      icon={<i className="pencil alternate icon" />}
-                    />
-                    <Form.Input
-                      placeholder="What you paid for the item"
-                      label="What you paid for the item"
-                      name="price"
-                      onChange={onChange}
-                      value={(values as ItemFormType).price}
-                      error={errors.price ? true : false}
-                      type="number"
-                      iconPosition="left"
-                      icon={<i className="dollar sign icon" />}
-                    />
-                    <Form.Input
-                      placeholder="What it currently costs"
-                      label="What it currently costs"
-                      name="cost"
-                      onChange={onChange}
-                      value={(values as ItemFormType).cost}
-                      error={errors.cost ? true : false}
-                      type="number"
-                      iconPosition="left"
-                      icon={<i className="dollar sign icon" />}
-                    />
-                    <Button fluid type="submit" primary className="button">
-                      Save Item
-                    </Button>
-                  </div>
-                </Form>
-                <ErrorsBlock errors={errors} />
+                <ItemForm
+                  modalClose={onModalClose}
+                  messageShow={onShowMessage}
+                />
               </Modal.Content>
             </Modal>
           </Container>
