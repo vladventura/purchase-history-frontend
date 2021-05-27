@@ -8,6 +8,7 @@ import {
 } from "semantic-ui-react";
 import { Item } from "../../graphql/schemas";
 import { DeleteButton } from "./DeleteButton";
+import { EditButton } from "./EditButton";
 
 type ItemsDisplayProps = {
   items?: Array<Item> | null;
@@ -32,9 +33,7 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
                     key={item.id}
                     extra={
                       <div className="ui two buttons">
-                        <Button basic color="blue">
-                          Edit
-                        </Button>
+                        <EditButton item={item} />
                         <DeleteButton item={item} />
                       </div>
                     }
