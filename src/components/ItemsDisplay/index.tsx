@@ -1,11 +1,4 @@
-import {
-  Card,
-  Container,
-  Grid,
-  Button,
-  Loader,
-  Transition,
-} from "semantic-ui-react";
+import { Card, Container, Grid, Loader, Transition } from "semantic-ui-react";
 import { Item } from "../../graphql/schemas";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
