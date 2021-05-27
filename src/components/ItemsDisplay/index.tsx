@@ -1,4 +1,3 @@
-import { useMutation } from "@apollo/client";
 import {
   Card,
   Container,
@@ -7,11 +6,8 @@ import {
   Loader,
   Transition,
 } from "semantic-ui-react";
-import { DELETE_ITEM_MUTATION } from "../../graphql/mutations";
-import { GET_ITEMS_QUERY } from "../../graphql/queries";
 import { Item } from "../../graphql/schemas";
-import { AuthContext } from "../../context/auth";
-import { useContext } from "react";
+import { DeleteButton } from "./DeleteButton";
 
 type ItemsDisplayProps = {
   items?: Array<Item> | null;
@@ -19,16 +15,6 @@ type ItemsDisplayProps = {
 };
 
 const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
-  const [deleteItem, { loading: loadingMutation }] = useMutation(
-    DELETE_ITEM_MUTATION,
-    {
-      onError: (err) => {
-        console.log(err);
-      },
-    }
-  );
-  const { removeItem } = useContext(AuthContext);
-
   return (
     <Container>
       <Grid stretched padded>
@@ -49,42 +35,7 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
                         <Button basic color="blue">
                           Edit
                         </Button>
-                        <Button
-                          basic
-                          color="red"
-                          onClick={(_) =>
-                            deleteItem({
-                              variables: { itemId: item.id },
-                              update: (proxy) => {
-                                console.log(proxy);
-                                const data = proxy.readQuery({
-                                  query: GET_ITEMS_QUERY,
-                                }) as { getItems: [Item] };
-                                console.log(
-                                  proxy.readQuery({ query: GET_ITEMS_QUERY })
-                                );
-                                data.getItems.filter((itm) => {
-                                  console.log(itm.id);
-                                  return true;
-                                });
-                                proxy.writeQuery({
-                                  query: GET_ITEMS_QUERY,
-                                  data: {
-                                    ...data,
-                                    getItems: [
-                                      ...data.getItems.filter(
-                                        (itm) => itm.id !== item.id
-                                      ),
-                                    ],
-                                  },
-                                });
-                                removeItem(item);
-                              },
-                            })
-                          }
-                        >
-                          Delete
-                        </Button>
+                        <DeleteButton item={item} />
                       </div>
                     }
                   />
