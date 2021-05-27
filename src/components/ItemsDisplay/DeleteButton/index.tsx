@@ -1,9 +1,9 @@
-import { Button } from "semantic-ui-react";
+import { Button, Confirm } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 import { DELETE_ITEM_MUTATION } from "../../../graphql/mutations";
 import { GET_ITEMS_QUERY } from "../../../graphql/queries";
 import { Item } from "../../../graphql/schemas";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../../context/auth";
 
 type DeleteButtonProps = {
@@ -11,6 +11,7 @@ type DeleteButtonProps = {
 };
 
 export const DeleteButton = ({ item }: DeleteButtonProps) => {
+  const [showConfirm, setShowConfirm] = useState(false);
   const { removeItem } = useContext(AuthContext);
   const [deleteItem] = useMutation(DELETE_ITEM_MUTATION, {
     variables: {
@@ -28,11 +29,20 @@ export const DeleteButton = ({ item }: DeleteButtonProps) => {
         },
       });
       removeItem(item);
+      setShowConfirm(false);
     },
   });
   return (
-    <Button basic color="red" onClick={(_) => deleteItem()}>
-      Delete
-    </Button>
+    <>
+      <Button basic color="red" onClick={() => setShowConfirm(true)}>
+        Delete
+      </Button>
+      <Confirm
+        open={showConfirm}
+        onCancel={() => setShowConfirm(false)}
+        onConfirm={() => deleteItem()}
+        content="Are you sure you want to delete this item? This action is irreversible"
+      />
+    </>
   );
 };
