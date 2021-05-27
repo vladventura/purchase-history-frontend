@@ -77,7 +77,15 @@ export const ItemForm = ({ item, modalClose, messageShow }: ItemFormProps) => {
   };
 
   const [editOrAdd, { loading }] = useMutation(MUTATION, {
-    variables: values,
+    variables:
+      MUTATION === UPDATE_ITEM_MUTATION
+        ? {
+            itemId: item?.id,
+            name: (values as ItemFormType).name,
+            price: (values as ItemFormType).price,
+            cost: (values as ItemFormType).cost,
+          }
+        : values,
     update,
     onError: (error) => {
       const errs = error.graphQLErrors[0].extensions?.exception.errors;
