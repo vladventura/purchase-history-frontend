@@ -1,23 +1,17 @@
-import { useMutation } from "@apollo/client";
 import moment from "moment";
 import { useContext, useState } from "react";
 import {
   Button,
   Card,
   Container,
-  Form,
   Grid,
   Header,
   Message,
   Modal,
 } from "semantic-ui-react";
-import { ItemErrorsType, ItemFormType } from "../../common/types";
 import { AuthContext } from "../../context/auth";
-import { ADD_ITEM_MUTATION } from "../../graphql/mutations";
-import { GetItemsQuery, GET_ITEMS_QUERY } from "../../graphql/queries";
-import { Item, User } from "../../graphql/schemas";
-import { OnForm } from "../../utils/hooks";
-import { ErrorsBlock } from "../ErrorsBlock";
+import { User } from "../../graphql/schemas";
+import { ItemForm } from "../ItemForm";
 import "./index.css";
 
 type ProfileBannerProps = {
@@ -25,43 +19,10 @@ type ProfileBannerProps = {
 };
 
 const ProfileBanner = ({ user }: ProfileBannerProps) => {
-  const initState: ItemFormType = {
-    name: "",
-    price: 0.0,
-    cost: 0.0,
-  };
   const [openModal, setOpenModal] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const { values, onChange, onSubmit, clearValues } = OnForm(
-    addAnItem,
-    initState
-  );
-  const [errors, setErrors] = useState({} as ItemErrorsType);
 
-  const { logout, addItem: addItemAction } = useContext(AuthContext);
-
-  const [addItem, { loading }] = useMutation(ADD_ITEM_MUTATION, {
-    update: (proxy, result) => {
-      onModalClose();
-      onShowMessage();
-      const data: GetItemsQuery | null = proxy.readQuery({
-        query: GET_ITEMS_QUERY,
-      });
-      proxy.writeQuery({
-        query: GET_ITEMS_QUERY,
-        data: {
-          ...data,
-          getItems: [result.data?.addItem, ...(data?.getItems as [Item])],
-        },
-      });
-      addItemAction(result.data?.addItem as Item);
-    },
-    variables: values,
-    onError: (error) => {
-      const errs = error.graphQLErrors[0].extensions?.exception.errors;
-      setErrors(errs);
-    },
-  });
+  const { logout } = useContext(AuthContext);
 
   function onShowMessage() {
     setShowMessage(true);
@@ -70,11 +31,6 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
 
   function onModalClose() {
     setOpenModal(false);
-    clearValues();
-  }
-
-  function addAnItem() {
-    addItem();
   }
 
   return (
@@ -101,50 +57,10 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
             >
               <Modal.Header>Add an item</Modal.Header>
               <Modal.Content>
-                <Form
-                  onSubmit={onSubmit}
-                  noValidate
-                  className={"ui large form " + (loading ? "loading" : "")}
-                >
-                  <div className="ui segment">
-                    <Form.Input
-                      placeholder="Item Name"
-                      label="Item Name"
-                      name="name"
-                      onChange={onChange}
-                      value={(values as ItemFormType).name}
-                      error={errors.name ? true : false}
-                      iconPosition="left"
-                      icon={<i className="pencil alternate icon" />}
-                    />
-                    <Form.Input
-                      placeholder="What you paid for the item"
-                      label="What you paid for the item"
-                      name="price"
-                      onChange={onChange}
-                      value={(values as ItemFormType).price}
-                      error={errors.price ? true : false}
-                      type="number"
-                      iconPosition="left"
-                      icon={<i className="dollar sign icon" />}
-                    />
-                    <Form.Input
-                      placeholder="What it currently costs"
-                      label="What it currently costs"
-                      name="cost"
-                      onChange={onChange}
-                      value={(values as ItemFormType).cost}
-                      error={errors.cost ? true : false}
-                      type="number"
-                      iconPosition="left"
-                      icon={<i className="dollar sign icon" />}
-                    />
-                    <Button fluid type="submit" primary className="button">
-                      Save Item
-                    </Button>
-                  </div>
-                </Form>
-                <ErrorsBlock errors={errors} />
+                <ItemForm
+                  modalClose={onModalClose}
+                  messageShow={onShowMessage}
+                />
               </Modal.Content>
             </Modal>
           </Container>

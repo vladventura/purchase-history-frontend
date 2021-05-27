@@ -20,6 +20,13 @@ export const ADD_ITEM_MUTATION = gql`
   }
 `
 
+export const UPDATE_ITEM_MUTATION = gql`
+  mutation($itemId: ID!, $name: String!, $price: Float!, $cost: Float!) {
+    updateItem(itemId: $itemId, name: $name, price: $price, cost: $cost)
+  }
+
+`;
+
 export const DELETE_ITEM_MUTATION = gql`
   mutation ($itemId: ID!){
     deleteItem(itemId: $itemId)
