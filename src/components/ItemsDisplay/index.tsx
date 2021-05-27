@@ -7,6 +7,7 @@ import {
   Transition,
 } from "semantic-ui-react";
 import { Item } from "../../graphql/schemas";
+import { DeleteButton } from "./DeleteButton";
 
 type ItemsDisplayProps = {
   items?: Array<Item> | null;
@@ -34,9 +35,7 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
                         <Button basic color="blue">
                           Edit
                         </Button>
-                        <Button basic color="red">
-                          Delete
-                        </Button>
+                        <DeleteButton item={item} />
                       </div>
                     }
                   />
