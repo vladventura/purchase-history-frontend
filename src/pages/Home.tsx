@@ -6,6 +6,7 @@ import { ProfileBanner } from "../components/ProfileBanner";
 import { ItemsDisplay } from "../components/ItemsDisplay";
 import { useQuery } from "@apollo/client";
 import { GetItemsQuery, GET_ITEMS_QUERY } from "../graphql/queries";
+import { UIProvider } from "../context/ui";
 const Home = () => {
   const { user } = useContext(AuthContext);
   const redirect = <Redirect to="/login" />;
@@ -13,11 +14,13 @@ const Home = () => {
 
   const home = (
     <Container fluid>
-      <ProfileBanner user={user} />
-      <ItemsDisplay
-        items={(data as GetItemsQuery)?.getItems}
-        loading={loading}
-      />
+      <UIProvider>
+        <ProfileBanner user={user} />
+        <ItemsDisplay
+          items={(data as GetItemsQuery)?.getItems}
+          loading={loading}
+        />
+      </UIProvider>
     </Container>
   );
   return user ? home : redirect;

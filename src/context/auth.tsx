@@ -8,14 +8,14 @@ import { UserMutation } from "../graphql/mutations";
 interface Jwtitem extends User {
   exp: number;
 }
-interface State {
+type State = {
   user: Jwtitem | null;
   login: (userData: UserMutation) => void;
   logout: () => void;
   addItem: (item: Item) => void;
   removeItem: (item: Item) => void;
   editItem: (oldItem: Item, newItem: Item) => void;
-}
+};
 
 // This is like a replacement of Redux
 const initState: State = {
@@ -42,14 +42,7 @@ if (localStorage.getItem(JWT_TOKEN_KEY)) {
   }
 }
 
-const AuthContext = createContext({
-  user: null,
-  login: (userData: UserMutation) => {},
-  logout: () => {},
-  addItem: (item) => {},
-  removeItem: (item) => {},
-  editItem: (oldItem, newItem) => {},
-} as State);
+const AuthContext = createContext(initState);
 
 function authReducer(state: State, action: { type: string; payload?: any }) {
   switch (action.type) {

@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { ItemErrorsType, ItemFormType } from "../common/types";
 import { AuthContext } from "../context/auth";
+import { UIContext } from "../context/ui";
 import { ADD_ITEM_MUTATION, UPDATE_ITEM_MUTATION } from "../graphql/mutations";
 import { GetItemsQuery, GET_ITEMS_QUERY } from "../graphql/queries";
 import { Item } from "../graphql/schemas";
@@ -11,11 +12,13 @@ import { ErrorsBlock } from "./ErrorsBlock";
 
 type ItemFormProps = {
   item?: Item;
-  modalClose?: Function;
-  messageShow?: Function;
+  onFormSubmit?: Function;
 };
 
-export const ItemForm = ({ item, modalClose, messageShow }: ItemFormProps) => {
+export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
+  const { displayMessage } = useContext(UIContext);
+  const { addItem, editItem } = useContext(AuthContext);
+
   const MUTATION = item ? UPDATE_ITEM_MUTATION : ADD_ITEM_MUTATION;
 
   const initState: ItemFormType = {
@@ -30,8 +33,6 @@ export const ItemForm = ({ item, modalClose, messageShow }: ItemFormProps) => {
     editOrAddItem,
     initState
   );
-
-  const { addItem, editItem } = useContext(AuthContext);
 
   const update = (
     proxy: ApolloCache<any>,
@@ -72,8 +73,12 @@ export const ItemForm = ({ item, modalClose, messageShow }: ItemFormProps) => {
       editItem(item!, newItem);
       clearValues();
     }
-    modalClose?.();
-    messageShow?.();
+    onFormSubmit?.();
+    displayMessage(
+      MUTATION === UPDATE_ITEM_MUTATION
+        ? "Item updated successfully!"
+        : "Item saved successfully!"
+    );
   };
 
   const [editOrAdd, { loading }] = useMutation(MUTATION, {
@@ -138,7 +143,7 @@ export const ItemForm = ({ item, modalClose, messageShow }: ItemFormProps) => {
             icon={<i className="dollar sign icon" />}
           />
           <Button fluid type="submit" primary className="button">
-            Save Item
+            {MUTATION === UPDATE_ITEM_MUTATION ? "Update Item" : "Add Item"}
           </Button>
         </div>
       </Form>

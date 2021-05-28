@@ -10,6 +10,7 @@ import {
   Modal,
 } from "semantic-ui-react";
 import { AuthContext } from "../../context/auth";
+import { UIContext } from "../../context/ui";
 import { User } from "../../graphql/schemas";
 import { ItemForm } from "../ItemForm";
 import "./index.css";
@@ -20,14 +21,8 @@ type ProfileBannerProps = {
 
 const ProfileBanner = ({ user }: ProfileBannerProps) => {
   const [openModal, setOpenModal] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-
   const { logout } = useContext(AuthContext);
-
-  function onShowMessage() {
-    setShowMessage(true);
-    setTimeout(() => setShowMessage(false), 2000);
-  }
+  const { showMessage, message } = useContext(UIContext);
 
   function onModalClose() {
     setOpenModal(false);
@@ -57,10 +52,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
             >
               <Modal.Header>Add an item</Modal.Header>
               <Modal.Content>
-                <ItemForm
-                  modalClose={onModalClose}
-                  messageShow={onShowMessage}
-                />
+                <ItemForm onFormSubmit={onModalClose} />
               </Modal.Content>
             </Modal>
           </Container>
@@ -95,7 +87,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
       {showMessage && (
         <Grid.Row centered>
           <Message floating positive>
-            Item Added succesfully!
+            {message}
           </Message>
         </Grid.Row>
       )}
