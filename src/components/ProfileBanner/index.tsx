@@ -23,6 +23,10 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
   const [openModal, setOpenModal] = useState(false);
   const { logout } = useContext(AuthContext);
   const { showMessage, message } = useContext(UIContext);
+  const currency = new Intl.NumberFormat("en-EN", {
+    style: "currency",
+    currency: "USD",
+  });
 
   function onModalClose() {
     setOpenModal(false);
@@ -63,15 +67,17 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
             <Grid.Column>
               <Card
                 header="Items added"
-                description={user?.profile?.totalAddedItems}
+                description={currency.format(
+                  user?.profile?.totalAddedItems || 0
+                )}
               />
               <Card
                 header="Price paid"
-                description={"$" + user?.profile?.totalPrice}
+                description={currency.format(user?.profile?.totalPrice || 0)}
               />
               <Card
                 header="Current cost"
-                description={"$" + user?.profile?.totalCost}
+                description={currency.format(user?.profile?.totalCost || 0)}
               />
             </Grid.Column>
           </Grid.Row>

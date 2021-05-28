@@ -9,6 +9,11 @@ type ItemsDisplayProps = {
 };
 
 const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
+  const currency = Intl.NumberFormat("en-EN", {
+    style: "currency",
+    currency: "USD",
+  });
+
   return (
     <Container>
       <Grid stretched padded>
@@ -21,8 +26,8 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
                 {items?.map((item) => (
                   <Card
                     header={item.name}
-                    description={"Paid $" + item.price}
-                    meta={"Current cost $" + item.cost}
+                    description={"Paid " + currency.format(item.price)}
+                    meta={"Current cost " + currency.format(item.cost)}
                     key={item.id}
                     extra={
                       <div className="ui two buttons">
