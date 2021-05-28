@@ -26,7 +26,7 @@ export const EditButton = ({ item }: EditButtonProps) => {
     >
       <Modal.Header>Edit an item</Modal.Header>
       <Modal.Content>
-        <ItemForm item={item} modalClose={onModalClose} />
+        <ItemForm item={item} onFormSubmit={onModalClose} />
       </Modal.Content>
     </Modal>
   );
