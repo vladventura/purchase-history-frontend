@@ -27,7 +27,7 @@ const uiReducer = (state: UIState, action: { type: string; payload?: any }) => {
 
 export const UIProvider = (props: Object) => {
   const [state, dispatch] = useReducer(uiReducer, initState);
-  const displayMessage = (message: string) => {
+  const displayMessage = (message: string, timeout?: number) => {
     dispatch({
       payload: message,
       type: "SHOW_MESSAGE",
@@ -37,7 +37,7 @@ export const UIProvider = (props: Object) => {
         dispatch({
           type: "HIDE_MESSAGE",
         }),
-      1000
+      timeout ?? 2000
     );
   };
   return (
