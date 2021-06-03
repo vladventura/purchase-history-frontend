@@ -12,14 +12,13 @@ const Home = () => {
   const redirect = <Redirect to="/login" />;
   const { data, loading } = useQuery(GET_ITEMS_QUERY);
 
+  const items = (data as GetItemsQuery)?.getItems;
+
   const home = (
     <Container fluid>
       <UIProvider>
         <ProfileBanner user={user} />
-        <ItemsDisplay
-          items={(data as GetItemsQuery)?.getItems}
-          loading={loading}
-        />
+        <ItemsDisplay items={items} loading={loading} />
       </UIProvider>
     </Container>
   );
