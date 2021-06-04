@@ -1,5 +1,5 @@
 import moment from "moment";
-import { ReactHTMLElement, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import {
   Button,
   Card,
@@ -47,7 +47,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
   ];
 
   const onDropdownChange = (
-    e: React.SyntheticEvent<HTMLElement, Event>,
+    _: React.SyntheticEvent<HTMLElement, Event>,
     { value }: DropdownProps
   ) => {
     setItems(undefined, value as SortTypes);

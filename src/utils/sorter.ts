@@ -1,6 +1,5 @@
 import moment from "moment"
 import { Item } from "../graphql/schemas"
-import { InMemoryCache } from "@apollo/client/";
 
 enum SortTypes {
     PriceAsc,
