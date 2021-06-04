@@ -5,6 +5,8 @@ import { GET_ITEMS_QUERY } from "../../../graphql/queries";
 import { Item } from "../../../graphql/schemas";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../../context/auth";
+import { ItemsContext } from "../../../context/items";
+import { SortTypes } from "../../../utils/sorter";
 
 type DeleteButtonProps = {
   item: Item;
@@ -13,6 +15,7 @@ type DeleteButtonProps = {
 export const DeleteButton = ({ item }: DeleteButtonProps) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const { removeItem } = useContext(AuthContext);
+  const { setItems } = useContext(ItemsContext);
   const [deleteItem] = useMutation(DELETE_ITEM_MUTATION, {
     variables: {
       itemId: item.id,
@@ -21,11 +24,13 @@ export const DeleteButton = ({ item }: DeleteButtonProps) => {
       const data = proxy.readQuery({
         query: GET_ITEMS_QUERY,
       }) as { getItems: [Item] };
+      const items = [...data.getItems.filter((itm) => itm.id !== item.id)];
+      setItems(items as [Item], SortTypes.Current);
       proxy.writeQuery({
         query: GET_ITEMS_QUERY,
         data: {
           ...data,
-          getItems: [...data.getItems.filter((itm) => itm.id !== item.id)],
+          getItems: items,
         },
       });
       removeItem(item);
