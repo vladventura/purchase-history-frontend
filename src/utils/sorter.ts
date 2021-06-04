@@ -9,7 +9,7 @@ enum SortTypes {
     NameDesc,
     CostAsc,
     CostDesc,
-    Default
+    Current
 }
 
 type SorterInput = {
@@ -39,6 +39,7 @@ const sorter = (items: SorterInput["items"], type?: SorterInput["type"]) => {
         case SortTypes.CostDesc: return newItems?.sort(costDsc);
         case SortTypes.NameAsc: return newItems?.sort(nameAsc);
         case SortTypes.NameDesc: return newItems?.sort(nameDsc);
+        case SortTypes.Current: return newItems;
         default: return newItems?.sort(defaultSorter);
     }
 }
