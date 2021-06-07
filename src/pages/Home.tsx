@@ -7,19 +7,23 @@ import { ItemsDisplay } from "../components/ItemsDisplay";
 import { useQuery } from "@apollo/client";
 import { GetItemsQuery, GET_ITEMS_QUERY } from "../graphql/queries";
 import { UIProvider } from "../context/ui";
+import { ItemsContext } from "../context/items";
 const Home = () => {
   const { user } = useContext(AuthContext);
-  const redirect = <Redirect to="/login" />;
-  const { data, loading } = useQuery(GET_ITEMS_QUERY);
+  const { items, setItems } = useContext(ItemsContext);
 
+  const { data, loading } = useQuery(GET_ITEMS_QUERY, {
+    onCompleted: () => {
+      setItems((data as GetItemsQuery)?.getItems);
+    },
+  });
+
+  const redirect = <Redirect to="/login" />;
   const home = (
     <Container fluid>
       <UIProvider>
         <ProfileBanner user={user} />
-        <ItemsDisplay
-          items={(data as GetItemsQuery)?.getItems}
-          loading={loading}
-        />
+        <ItemsDisplay items={items} loading={loading} />
       </UIProvider>
     </Container>
   );

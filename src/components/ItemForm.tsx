@@ -3,11 +3,13 @@ import { useContext, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { ItemErrorsType, ItemFormType } from "../common/types";
 import { AuthContext } from "../context/auth";
+import { ItemsContext } from "../context/items";
 import { UIContext } from "../context/ui";
 import { ADD_ITEM_MUTATION, UPDATE_ITEM_MUTATION } from "../graphql/mutations";
 import { GetItemsQuery, GET_ITEMS_QUERY } from "../graphql/queries";
 import { Item } from "../graphql/schemas";
 import { OnForm } from "../utils/hooks";
+import { SortTypes } from "../utils/sorter";
 import { ErrorsBlock } from "./ErrorsBlock";
 
 type ItemFormProps = {
@@ -28,6 +30,7 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
   };
 
   const [errors, setErrors] = useState({} as ItemErrorsType);
+  const { setItems } = useContext(ItemsContext);
 
   const { onSubmit, values, onChange, clearValues } = OnForm(
     editOrAddItem,
@@ -42,11 +45,15 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
       const data: GetItemsQuery | null = proxy.readQuery({
         query: GET_ITEMS_QUERY,
       });
+
+      const oldData: [Item] = data?.getItems as [Item];
+      const items = [result.data?.addItem as Item, ...oldData];
+      setItems(items as [Item], SortTypes.Current);
       proxy.writeQuery({
         query: GET_ITEMS_QUERY,
         data: {
           ...data,
-          getItems: [result.data?.addItem, ...(data?.getItems as [Item])],
+          getItems: items,
         },
       });
       addItem(result.data?.addItem as Item);
@@ -60,6 +67,15 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
       const data: GetItemsQuery | null = proxy.readQuery({
         query: GET_ITEMS_QUERY,
       });
+
+      const oldData: [Item] = (data?.getItems as [Item]) || [];
+      const items = [
+        newItem as Item,
+        ...oldData.filter((itm) => itm.id !== item?.id),
+      ];
+
+      setItems(items as [Item], SortTypes.Current);
+
       proxy.writeQuery({
         query: GET_ITEMS_QUERY,
         data: {

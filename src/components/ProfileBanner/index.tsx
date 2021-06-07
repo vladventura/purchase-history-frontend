@@ -4,14 +4,18 @@ import {
   Button,
   Card,
   Container,
+  Dropdown,
+  DropdownProps,
   Grid,
   Header,
   Message,
   Modal,
 } from "semantic-ui-react";
 import { AuthContext } from "../../context/auth";
+import { ItemsContext } from "../../context/items";
 import { UIContext } from "../../context/ui";
 import { User } from "../../graphql/schemas";
+import { SortTypes } from "../../utils/sorter";
 import { ItemForm } from "../ItemForm";
 import "./index.css";
 
@@ -23,6 +27,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
   const [openModal, setOpenModal] = useState(false);
   const { logout } = useContext(AuthContext);
   const { showMessage, message } = useContext(UIContext);
+  const { setItems } = useContext(ItemsContext);
   const currency = new Intl.NumberFormat("en-EN", {
     style: "currency",
     currency: "USD",
@@ -31,6 +36,22 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
   function onModalClose() {
     setOpenModal(false);
   }
+
+  const dropdownOptions = [
+    { key: 1, text: "Name ⬆️", value: SortTypes.NameAsc },
+    { key: 2, text: "Name ⬇️", value: SortTypes.NameDesc },
+    { key: 3, text: "Price ⬆️", value: SortTypes.PriceAsc },
+    { key: 4, text: "Price ⬇️", value: SortTypes.PriceDesc },
+    { key: 5, text: "Cost ⬆️", value: SortTypes.CostAsc },
+    { key: 6, text: "Cost ⬇️", value: SortTypes.CostDesc },
+  ];
+
+  const onDropdownChange = (
+    _: React.SyntheticEvent<HTMLElement, Event>,
+    { value }: DropdownProps
+  ) => {
+    setItems(undefined, value as SortTypes);
+  };
 
   return (
     <Grid padded stretched className="segment profile-banner">
@@ -87,6 +108,15 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
             <Button onClick={logout} floated="right" basic color="red">
               Log out
             </Button>
+          </Container>
+          <Container>
+            <Dropdown
+              clearable
+              placeholder="Sort by"
+              options={dropdownOptions}
+              selection
+              onChange={onDropdownChange}
+            />
           </Container>
         </Grid.Column>
       </Grid.Row>
