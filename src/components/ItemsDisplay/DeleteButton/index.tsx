@@ -39,13 +39,19 @@ export const DeleteButton = ({ item }: DeleteButtonProps) => {
   });
   return (
     <>
-      <Button basic color="red" onClick={() => setShowConfirm(true)}>
+      <Button
+        basic
+        color="red"
+        onClick={() => setShowConfirm(true)}
+        data-testid="delete-button"
+      >
         Delete
       </Button>
       <Confirm
         open={showConfirm}
         onCancel={() => setShowConfirm(false)}
         onConfirm={() => deleteItem()}
+        data-testid="delete-button-confirm"
         content="Are you sure you want to delete this item? This action is irreversible"
       />
     </>

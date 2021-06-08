@@ -124,7 +124,7 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
         onSubmit={onSubmit}
         noValidate
         className={"ui large form " + (loading ? "loading" : "")}
-        test-id="item-form"
+        data-testid="item-form"
       >
         <div className="ui segment">
           <Form.Input
@@ -136,7 +136,7 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
             error={errors.name ? true : false}
             iconPosition="left"
             icon={<i className="pencil alternate icon" />}
-            test-id="item-form-name"
+            data-testid="item-form-name"
           />
           <Form.Input
             placeholder="What you paid for the item"
@@ -148,7 +148,7 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
             type="number"
             iconPosition="left"
             icon={<i className="dollar sign icon" />}
-            test-id="item-form-price"
+            data-testid="item-form-price"
           />
           <Form.Input
             placeholder="What it currently costs"
@@ -160,14 +160,14 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
             type="number"
             iconPosition="left"
             icon={<i className="dollar sign icon" />}
-            test-id="item-form-cost"
+            data-testid="item-form-cost"
           />
           <Button
             fluid
             type="submit"
             primary
             className="button"
-            test-id={
+            data-testid={
               MUTATION === UPDATE_ITEM_MUTATION
                 ? "item-form-update"
                 : "item-form-add"

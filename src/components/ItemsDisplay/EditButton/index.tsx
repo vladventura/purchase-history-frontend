@@ -18,8 +18,9 @@ export const EditButton = ({ item }: EditButtonProps) => {
       onOpen={onModalOpen}
       onClose={onModalClose}
       open={modalOpen}
+      data-testid="edit-button-modal"
       trigger={
-        <Button basic color="blue">
+        <Button basic color="blue" data-testid="edit-button">
           Edit
         </Button>
       }

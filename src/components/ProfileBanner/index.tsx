@@ -23,6 +23,15 @@ type ProfileBannerProps = {
   user?: User | null;
 };
 
+const dropdownOptions = [
+  { key: 1, text: "Name ⬆️", value: SortTypes.NameAsc },
+  { key: 2, text: "Name ⬇️", value: SortTypes.NameDesc },
+  { key: 3, text: "Price ⬆️", value: SortTypes.PriceAsc },
+  { key: 4, text: "Price ⬇️", value: SortTypes.PriceDesc },
+  { key: 5, text: "Cost ⬆️", value: SortTypes.CostAsc },
+  { key: 6, text: "Cost ⬇️", value: SortTypes.CostDesc },
+];
+
 const ProfileBanner = ({ user }: ProfileBannerProps) => {
   const [openModal, setOpenModal] = useState(false);
   const { logout } = useContext(AuthContext);
@@ -37,15 +46,6 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
     setOpenModal(false);
   }
 
-  const dropdownOptions = [
-    { key: 1, text: "Name ⬆️", value: SortTypes.NameAsc },
-    { key: 2, text: "Name ⬇️", value: SortTypes.NameDesc },
-    { key: 3, text: "Price ⬆️", value: SortTypes.PriceAsc },
-    { key: 4, text: "Price ⬇️", value: SortTypes.PriceDesc },
-    { key: 5, text: "Cost ⬆️", value: SortTypes.CostAsc },
-    { key: 6, text: "Cost ⬇️", value: SortTypes.CostDesc },
-  ];
-
   const onDropdownChange = (
     _: React.SyntheticEvent<HTMLElement, Event>,
     { value }: DropdownProps
@@ -54,14 +54,23 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
   };
 
   return (
-    <Grid padded stretched className="segment profile-banner">
+    <Grid
+      padded
+      stretched
+      className="segment profile-banner"
+      data-testid="profile-banner"
+    >
       <Grid.Row
         className="profile-banner-row"
         divided
         stretched
         verticalAlign="middle"
       >
-        <Grid.Column width={6} textAlign="center">
+        <Grid.Column
+          width={6}
+          textAlign="center"
+          data-testid="profile-banner-user-column"
+        >
           <Container>
             <Header>{user?.username}</Header>
             <Card.Description>
@@ -83,7 +92,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
           </Container>
         </Grid.Column>
 
-        <Grid.Column width={6}>
+        <Grid.Column width={6} data-testid="profile-banner-data-column">
           <Grid.Row>
             <Grid.Column>
               <Card
@@ -103,7 +112,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
             </Grid.Column>
           </Grid.Row>
         </Grid.Column>
-        <Grid.Column width={4}>
+        <Grid.Column width={4} data-testid="profile-banner-logout-column">
           <Container>
             <Button onClick={logout} floated="right" basic color="red">
               Log out
@@ -131,4 +140,4 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
   );
 };
 
-export { ProfileBanner };
+export { ProfileBanner, dropdownOptions };

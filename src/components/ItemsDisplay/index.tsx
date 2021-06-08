@@ -15,7 +15,7 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
   });
 
   return (
-    <Container>
+    <Container data-testid="items-display">
       <Grid stretched padded>
         {loading ? (
           <Loader active />
@@ -29,6 +29,7 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
                     description={"Paid " + currency.format(item.price)}
                     meta={"Current cost " + currency.format(item.cost)}
                     key={item.id}
+                    data-testid="items-display-item"
                     extra={
                       <div className="ui two buttons">
                         <EditButton item={item} />
