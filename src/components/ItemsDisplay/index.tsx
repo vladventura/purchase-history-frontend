@@ -1,7 +1,7 @@
 import { Card, Container, Grid, Loader, Transition } from "semantic-ui-react";
 import { Item } from "../../graphql/schemas";
-import { DeleteButton } from "./DeleteButton";
-import { EditButton } from "./EditButton";
+import { DeleteButton } from "../DeleteButton";
+import { EditButton } from "../EditButton";
 
 type ItemsDisplayProps = {
   items?: Array<Item> | null;
@@ -18,9 +18,9 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
     <Container>
       <Grid stretched padded>
         {loading ? (
-          <Loader active />
+          <Loader active data-testid="loader" />
         ) : (
-          <Grid.Row>
+          <Grid.Row data-testid="items-display">
             <div className="ui centered cards">
               <Transition.Group>
                 {items?.map((item) => (
@@ -29,6 +29,7 @@ const ItemsDisplay = ({ items, loading }: ItemsDisplayProps) => {
                     description={"Paid " + currency.format(item.price)}
                     meta={"Current cost " + currency.format(item.cost)}
                     key={item.id}
+                    data-testid="items-display-item"
                     extra={
                       <div className="ui two buttons">
                         <EditButton item={item} />

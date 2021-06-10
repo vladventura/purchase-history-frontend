@@ -38,7 +38,10 @@ const Register = (props: any) => {
   }
 
   return (
-    <Container className="middle aligned center aligned grid">
+    <Container
+      className="middle aligned center aligned grid"
+      data-testid="register-page"
+    >
       <div className="column">
         <h2 className="ui header">
           <div className="content">Register a new account</div>
@@ -47,6 +50,7 @@ const Register = (props: any) => {
           onSubmit={onSubmit}
           noValidate
           className={"ui large form " + (loading ? "loading" : "")}
+          data-testid="register-form"
         >
           <div className="ui stacked segment">
             <Form.Input
@@ -57,6 +61,7 @@ const Register = (props: any) => {
               error={errors.username ? true : false}
               iconPosition="left"
               icon={<i className="user icon" />}
+              data-testid="register-form-username"
             />
             <Form.Input
               placeholder="Email"
@@ -66,6 +71,7 @@ const Register = (props: any) => {
               error={errors.email ? true : false}
               iconPosition="left"
               icon={<i className="mail icon" />}
+              data-testid="register-form-email"
             />
             <Form.Input
               placeholder="Password"
@@ -76,6 +82,7 @@ const Register = (props: any) => {
               type="password"
               iconPosition="left"
               icon={<i className="lock icon" />}
+              data-testid="register-form-password"
             />
             <Form.Input
               onChange={onChange}
@@ -86,8 +93,15 @@ const Register = (props: any) => {
               placeholder="Confirm Password"
               iconPosition="left"
               icon={<i className="lock icon" />}
+              data-testid="register-form-confirm-password"
             />
-            <Button fluid type="submit" primary className="button">
+            <Button
+              fluid
+              type="submit"
+              primary
+              className="button"
+              data-testid="register-form-register"
+            >
               Register
             </Button>
           </div>

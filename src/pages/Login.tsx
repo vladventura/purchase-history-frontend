@@ -36,7 +36,10 @@ const Login = (props: any) => {
   }
 
   return (
-    <Container className="middle aligned center aligned grid">
+    <Container
+      className="middle aligned center aligned grid"
+      data-testid="login-page"
+    >
       <div className="column">
         <h2 className="ui header">
           <div className="content">Log into your account</div>
@@ -45,6 +48,7 @@ const Login = (props: any) => {
           onSubmit={onSubmit}
           noValidate
           className={"ui large form " + (loading ? "loading" : "")}
+          data-testid="login-form"
         >
           <div className="ui stacked segment">
             <Form.Input
@@ -55,6 +59,7 @@ const Login = (props: any) => {
               error={errors.username ? true : false}
               iconPosition="left"
               icon={<i className="user icon" />}
+              data-testid="login-form-username"
             />
             <Form.Input
               placeholder="Password"
@@ -65,8 +70,15 @@ const Login = (props: any) => {
               type="password"
               iconPosition="left"
               icon={<i className="lock icon" />}
+              data-testid="login-form-password"
             />
-            <Button fluid type="submit" primary className="button">
+            <Button
+              fluid
+              type="submit"
+              primary
+              className="button"
+              data-testid="login-form-login"
+            >
               Log in
             </Button>
           </div>

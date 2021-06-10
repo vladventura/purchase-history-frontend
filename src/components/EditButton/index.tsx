@@ -1,13 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
-import { Item } from "../../../graphql/schemas";
-import { ItemForm } from "../../ItemForm";
+import { Item } from "../../graphql/schemas";
+import { ItemForm } from "../ItemForm";
 
 type EditButtonProps = {
   item: Item;
+  onClick?: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void | undefined;
 };
 
-export const EditButton = ({ item }: EditButtonProps) => {
+export const EditButton = ({ item, onClick }: EditButtonProps) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const onModalClose = () => setModalOpen(false);
@@ -18,8 +21,14 @@ export const EditButton = ({ item }: EditButtonProps) => {
       onOpen={onModalOpen}
       onClose={onModalClose}
       open={modalOpen}
+      data-testid="edit-button-modal"
       trigger={
-        <Button basic color="blue">
+        <Button
+          basic
+          color="blue"
+          data-testid="edit-button"
+          onClick={onClick || undefined}
+        >
           Edit
         </Button>
       }

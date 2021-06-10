@@ -23,6 +23,45 @@ type ProfileBannerProps = {
   user?: User | null;
 };
 
+const dropdownOptions = [
+  {
+    key: 1,
+    text: "Name ⬆️",
+    value: SortTypes.NameAsc,
+    "data-testid": "profile-banner-dropdown-item",
+  },
+  {
+    key: 2,
+    text: "Name ⬇️",
+    value: SortTypes.NameDesc,
+    "data-testid": "profile-banner-dropdown-item",
+  },
+  {
+    key: 3,
+    text: "Price ⬆️",
+    value: SortTypes.PriceAsc,
+    "data-testid": "profile-banner-dropdown-item",
+  },
+  {
+    key: 4,
+    text: "Price ⬇️",
+    value: SortTypes.PriceDesc,
+    "data-testid": "profile-banner-dropdown-item",
+  },
+  {
+    key: 5,
+    text: "Cost ⬆️",
+    value: SortTypes.CostAsc,
+    "data-testid": "profile-banner-dropdown-item",
+  },
+  {
+    key: 6,
+    text: "Cost ⬇️",
+    value: SortTypes.CostDesc,
+    "data-testid": "profile-banner-dropdown-item",
+  },
+];
+
 const ProfileBanner = ({ user }: ProfileBannerProps) => {
   const [openModal, setOpenModal] = useState(false);
   const { logout } = useContext(AuthContext);
@@ -37,15 +76,6 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
     setOpenModal(false);
   }
 
-  const dropdownOptions = [
-    { key: 1, text: "Name ⬆️", value: SortTypes.NameAsc },
-    { key: 2, text: "Name ⬇️", value: SortTypes.NameDesc },
-    { key: 3, text: "Price ⬆️", value: SortTypes.PriceAsc },
-    { key: 4, text: "Price ⬇️", value: SortTypes.PriceDesc },
-    { key: 5, text: "Cost ⬆️", value: SortTypes.CostAsc },
-    { key: 6, text: "Cost ⬇️", value: SortTypes.CostDesc },
-  ];
-
   const onDropdownChange = (
     _: React.SyntheticEvent<HTMLElement, Event>,
     { value }: DropdownProps
@@ -54,17 +84,28 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
   };
 
   return (
-    <Grid padded stretched className="segment profile-banner">
+    <Grid
+      padded
+      stretched
+      className="segment profile-banner"
+      data-testid="profile-banner"
+    >
       <Grid.Row
         className="profile-banner-row"
         divided
         stretched
         verticalAlign="middle"
       >
-        <Grid.Column width={6} textAlign="center">
+        <Grid.Column
+          width={6}
+          textAlign="center"
+          data-testid="profile-banner-user-column"
+        >
           <Container>
-            <Header>{user?.username}</Header>
-            <Card.Description>
+            <Header data-testid="profile-banner-username">
+              {user?.username}
+            </Header>
+            <Card.Description data-testid="profile-banner-joined">
               {"Joined " + moment(user?.profile?.createdAt).fromNow(false)}
             </Card.Description>
           </Container>
@@ -73,7 +114,11 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
               onClose={onModalClose}
               onOpen={() => setOpenModal(true)}
               open={openModal}
-              trigger={<Button primary>Add an item</Button>}
+              trigger={
+                <Button data-testid="profile-banner-add" primary>
+                  Add an item
+                </Button>
+              }
             >
               <Modal.Header>Add an item</Modal.Header>
               <Modal.Content>
@@ -83,29 +128,36 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
           </Container>
         </Grid.Column>
 
-        <Grid.Column width={6}>
+        <Grid.Column width={6} data-testid="profile-banner-data-column">
           <Grid.Row>
             <Grid.Column>
               <Card
+                data-testid="profile-banner-total-items"
                 header="Items added"
-                description={currency.format(
-                  user?.profile?.totalAddedItems || 0
-                )}
+                description={user?.profile?.totalAddedItems || 0}
               />
               <Card
+                data-testid="profile-banner-total-price"
                 header="Price paid"
                 description={currency.format(user?.profile?.totalPrice || 0)}
               />
               <Card
+                data-testid="profile-banner-total-cost"
                 header="Current cost"
                 description={currency.format(user?.profile?.totalCost || 0)}
               />
             </Grid.Column>
           </Grid.Row>
         </Grid.Column>
-        <Grid.Column width={4}>
+        <Grid.Column width={4} data-testid="profile-banner-logout-column">
           <Container>
-            <Button onClick={logout} floated="right" basic color="red">
+            <Button
+              data-testid="profile-banner-logout"
+              onClick={logout}
+              floated="right"
+              basic
+              color="red"
+            >
               Log out
             </Button>
           </Container>
@@ -116,6 +168,7 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
               options={dropdownOptions}
               selection
               onChange={onDropdownChange}
+              data-testid="profile-banner-dropdown"
             />
           </Container>
         </Grid.Column>
@@ -131,4 +184,4 @@ const ProfileBanner = ({ user }: ProfileBannerProps) => {
   );
 };
 
-export { ProfileBanner };
+export { ProfileBanner, dropdownOptions };

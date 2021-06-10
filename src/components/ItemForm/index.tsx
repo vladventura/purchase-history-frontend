@@ -1,16 +1,19 @@
 import { ApolloCache, FetchResult, useMutation } from "@apollo/client";
 import { useContext, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
-import { ItemErrorsType, ItemFormType } from "../common/types";
-import { AuthContext } from "../context/auth";
-import { ItemsContext } from "../context/items";
-import { UIContext } from "../context/ui";
-import { ADD_ITEM_MUTATION, UPDATE_ITEM_MUTATION } from "../graphql/mutations";
-import { GetItemsQuery, GET_ITEMS_QUERY } from "../graphql/queries";
-import { Item } from "../graphql/schemas";
-import { OnForm } from "../utils/hooks";
-import { SortTypes } from "../utils/sorter";
-import { ErrorsBlock } from "./ErrorsBlock";
+import { ItemErrorsType, ItemFormType } from "../../common/types";
+import { AuthContext } from "../../context/auth";
+import { ItemsContext } from "../../context/items";
+import { UIContext } from "../../context/ui";
+import {
+  ADD_ITEM_MUTATION,
+  UPDATE_ITEM_MUTATION,
+} from "../../graphql/mutations";
+import { GetItemsQuery, GET_ITEMS_QUERY } from "../../graphql/queries";
+import { Item } from "../../graphql/schemas";
+import { OnForm } from "../../utils/hooks";
+import { SortTypes } from "../../utils/sorter";
+import { ErrorsBlock } from "../ErrorsBlock";
 
 type ItemFormProps = {
   item?: Item;
@@ -56,6 +59,7 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
           getItems: items,
         },
       });
+      console.log("Adding, ", data?.getItems);
       addItem(result.data?.addItem as Item);
     } else {
       const newItem = {
@@ -89,12 +93,6 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
       editItem(item!, newItem);
       clearValues();
     }
-    onFormSubmit?.();
-    displayMessage(
-      MUTATION === UPDATE_ITEM_MUTATION
-        ? "Item updated successfully!"
-        : "Item saved successfully!"
-    );
   };
 
   const [editOrAdd, { loading }] = useMutation(MUTATION, {
@@ -109,8 +107,17 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
         : values,
     update,
     onError: (error) => {
-      const errs = error.graphQLErrors[0].extensions?.exception.errors;
+      const errs = error.graphQLErrors[0]?.extensions?.exception.errors;
+      console.log("During test this blows up", error);
       setErrors(errs);
+    },
+    onCompleted: () => {
+      onFormSubmit?.();
+      displayMessage(
+        MUTATION === UPDATE_ITEM_MUTATION
+          ? "Item updated successfully!"
+          : "Item saved successfully!"
+      );
     },
   });
 
@@ -124,6 +131,7 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
         onSubmit={onSubmit}
         noValidate
         className={"ui large form " + (loading ? "loading" : "")}
+        data-testid="item-form"
       >
         <div className="ui segment">
           <Form.Input
@@ -135,6 +143,7 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
             error={errors.name ? true : false}
             iconPosition="left"
             icon={<i className="pencil alternate icon" />}
+            data-testid="item-form-name"
           />
           <Form.Input
             placeholder="What you paid for the item"
@@ -146,6 +155,7 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
             type="number"
             iconPosition="left"
             icon={<i className="dollar sign icon" />}
+            data-testid="item-form-price"
           />
           <Form.Input
             placeholder="What it currently costs"
@@ -157,8 +167,19 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
             type="number"
             iconPosition="left"
             icon={<i className="dollar sign icon" />}
+            data-testid="item-form-cost"
           />
-          <Button fluid type="submit" primary className="button">
+          <Button
+            fluid
+            type="submit"
+            primary
+            className="button"
+            data-testid={
+              MUTATION === UPDATE_ITEM_MUTATION
+                ? "item-form-update"
+                : "item-form-add"
+            }
+          >
             {MUTATION === UPDATE_ITEM_MUTATION ? "Update Item" : "Add Item"}
           </Button>
         </div>
