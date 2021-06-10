@@ -49,6 +49,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-router-dom": "^5.1.7",
+    "@types/testing-library__react": "^10.2.0"
   }
 }
