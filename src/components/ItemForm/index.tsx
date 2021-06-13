@@ -108,7 +108,6 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
     update,
     onError: (error) => {
       const errs = error.graphQLErrors[0]?.extensions?.exception.errors;
-      console.log("During test this blows up", error);
       setErrors(errs);
     },
     onCompleted: () => {
@@ -140,7 +139,7 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
             name="name"
             onChange={onChange}
             value={(values as ItemFormType).name}
-            error={errors.name ? true : false}
+            error={errors?.name ? true : false}
             iconPosition="left"
             icon={<i className="pencil alternate icon" />}
             data-testid="item-form-name"
@@ -151,7 +150,7 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
             name="price"
             onChange={onChange}
             value={(values as ItemFormType).price}
-            error={errors.price ? true : false}
+            error={errors?.price ? true : false}
             type="number"
             iconPosition="left"
             icon={<i className="dollar sign icon" />}
@@ -163,7 +162,7 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
             name="cost"
             onChange={onChange}
             value={(values as ItemFormType).cost}
-            error={errors.cost ? true : false}
+            error={errors?.cost ? true : false}
             type="number"
             iconPosition="left"
             icon={<i className="dollar sign icon" />}

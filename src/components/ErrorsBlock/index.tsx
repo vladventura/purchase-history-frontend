@@ -9,6 +9,8 @@ const ErrorsBlock = ({ errors }: { errors: {} }) =>
         ))}
       </ul>
     </div>
-  ) : null;
+  ) : (
+    <></>
+  );
 
 export { ErrorsBlock };
