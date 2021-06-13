@@ -18,6 +18,8 @@ const Home = () => {
     },
   });
 
+  console.log(data);
+
   const redirect = <Redirect to="/login" />;
   const home = (
     <Container fluid>

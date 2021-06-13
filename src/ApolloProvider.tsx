@@ -9,7 +9,11 @@ import App from "./App";
 import { JWT_TOKEN_KEY } from "./constants";
 
 const uri =
-  process.env.NODE_ENV === "development" ? "http://localhost:4000/graphql" : "";
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:4000/graphql"
+    : "https://purchase-history-backend.ue.r.appspot.com/graphql";
+
+console.log(uri);
 
 // Using memory for caching queries
 // createHttpLink that returns an apollo link
