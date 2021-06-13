@@ -1,3 +1,3 @@
 #!/bin/sh
 
-npm start
+serve -p $PORT -s build

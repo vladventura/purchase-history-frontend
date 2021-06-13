@@ -11,4 +11,8 @@ RUN npm ci
 RUN echo "Building the frontend"
 RUN npm run build
 
+EXPOSE $PORT
+
 RUN serve -p $PORT -s build
+
+ENTRYPOINT ["sh", "./entrypoint.sh"]
