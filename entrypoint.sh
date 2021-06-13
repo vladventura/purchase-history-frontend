@@ -1,3 +1,3 @@
 #!/bin/sh
 
-serve -p $PORT -s build
+serve -p 8080 -s build
