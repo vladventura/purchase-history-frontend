@@ -11,7 +11,7 @@ import { JWT_TOKEN_KEY } from "./constants";
 const uri =
   process.env.NODE_ENV === "development"
     ? "http://localhost:4000/graphql"
-    : "https://purchase-history-backend.ue.r.appspot.com/graphql";
+    : "https://backend-dot-purchase-history-316614.ue.r.appspot.com//graphql";
 
 console.log(uri);
 
