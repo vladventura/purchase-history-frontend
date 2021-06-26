@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Button, Container, Form } from "semantic-ui-react";
+import { Button, Container, Form, Modal } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 import { AuthContext } from "../context/auth";
 import { LOGIN_USER_MUTATION } from "../graphql/mutations";
@@ -7,6 +7,7 @@ import { OnForm } from "../utils/hooks";
 import { UserMutation } from "../graphql/mutations";
 import { AuthFormType, FormErrorsType } from "../common/types";
 import { ErrorsBlock } from "../components/ErrorsBlock";
+import { VerifyAccount } from "../components/VerifyAccount";
 
 const Login = (props: any) => {
   const initState = {
@@ -14,25 +15,32 @@ const Login = (props: any) => {
     password: "",
   };
 
-  const { values, onChange, onSubmit } = OnForm(registerUser, initState);
+  const { values, onChange, onSubmit } = OnForm(loginUser, initState);
 
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({} as FormErrorsType);
+  const [showModal, setShowModal] = useState(false);
+  const [uid, setUid] = useState("");
 
-  const [register, { loading }] = useMutation(LOGIN_USER_MUTATION, {
+  const [login, { loading }] = useMutation(LOGIN_USER_MUTATION, {
     update: (_, result) => {
       context.login(result as UserMutation);
       props.history.push("/");
     },
     onError: (err) => {
-      const errs = err.graphQLErrors[0].extensions?.exception.errors;
-      setErrors(errs);
+      if (err.graphQLErrors[0].extensions?.code === "BAD_USER_INPUT") {
+        const errs = err.graphQLErrors[0].extensions?.exception.errors;
+        setErrors(errs);
+      } else {
+        setShowModal(true);
+        setUid(err.graphQLErrors[0].extensions?.exception.errors);
+      }
     },
     variables: values,
   });
 
-  function registerUser() {
-    register();
+  function loginUser() {
+    login();
   }
 
   return (
@@ -88,6 +96,9 @@ const Login = (props: any) => {
           Don't have an account yet? <a href="/register"> Make a new one!</a>
         </div>
       </div>
+      <Modal open={showModal} onClose={() => setShowModal(false)}>
+        <VerifyAccount uid={uid} />
+      </Modal>
     </Container>
   );
 };
