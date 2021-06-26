@@ -29,8 +29,6 @@ const sorter = (items: SorterInput["items"], type?: SorterInput["type"]) => {
 
 
     let newItems = Array.from(items || []);
-    console.log(items);
-    console.log(newItems);
     switch (type) {
         case SortTypes.PriceAsc: return newItems?.sort(priceAsc);
         case SortTypes.PriceDesc: return newItems?.sort(priceDsc);

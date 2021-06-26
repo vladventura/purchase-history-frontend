@@ -82,7 +82,6 @@ function authReducer(state: State, action: { type: string; payload?: any }) {
 function AuthProvider(props: Object) {
   const [state, dispatch] = useReducer(authReducer, initState);
   const login = (userData: UserMutation) => {
-    console.log(userData);
     localStorage.setItem(
       JWT_TOKEN_KEY,
       userData.data.register?.token || userData.data.login?.token || ""
@@ -90,7 +89,6 @@ function AuthProvider(props: Object) {
     const user = userData.data.register ?? userData.data.login;
     // Save the profile here
     const profile = user?.profile;
-    console.log(profile);
     localStorage.setItem("userProfile", JSON.stringify(profile));
     dispatch({
       type: "LOGIN",

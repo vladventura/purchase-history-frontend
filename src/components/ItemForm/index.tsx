@@ -59,7 +59,6 @@ export const ItemForm = ({ item, onFormSubmit }: ItemFormProps) => {
           getItems: items,
         },
       });
-      console.log("Adding, ", data?.getItems);
       addItem(result.data?.addItem as Item);
     } else {
       const newItem = {

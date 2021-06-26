@@ -18,7 +18,6 @@ function OnForm(callback: Function, initState: AuthFormType | ItemFormType) {
         setValues({ ...values, [e.target.name]: val });
     };
     const onSubmit = (e: React.FormEvent) => {
-        console.log(values)
         e.preventDefault();
         callback();
     };
