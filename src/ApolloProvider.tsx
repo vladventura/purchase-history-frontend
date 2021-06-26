@@ -13,8 +13,6 @@ const uri =
     ? "http://localhost:4000/graphql"
     : "https://backend-dot-purchase-history-316614.ue.r.appspot.com//graphql";
 
-console.log(uri);
-
 // Using memory for caching queries
 // createHttpLink that returns an apollo link
 const link = createHttpLink({
