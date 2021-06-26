@@ -1,13 +1,12 @@
-import { Card, Container, Modal } from "semantic-ui-react";
+import { Container, Header } from "semantic-ui-react";
 
 const NotFound = () => (
   <>
     <Container className="middle aligned center aligned grid">
-      <div className="column">
-        <Modal dimmer={false} open={true}>
-          <Card.Header>Page not found</Card.Header>
-        </Modal>
-      </div>
+      <Container className="ui message column">
+        <Header>Page not found</Header>
+        <a href="/">Go back home</a>
+      </Container>
     </Container>
   </>
 );
