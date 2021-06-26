@@ -45,23 +45,36 @@ export const REGISTER_USER_MUTATION = gql`
       email: $email
       password: $password
       confirmPassword: $confirmPassword
-    ) {
-      id
-      token
-      createdAt
-      username
-      profile {
-        totalCost
-        totalPrice
-        totalAddedItems
-      }
-    }
+    )
   }
 `;
 
 export const LOGIN_USER_MUTATION = gql`
   mutation ($username: String!, $password: String!) {
     login(username: $username, password: $password) {
+      id
+      token
+      username
+      createdAt
+      profile {
+        totalCost
+        totalPrice
+        totalAddedItems
+        createdAt
+      }
+    }
+  }
+`;
+
+export const RESEND_CONFIRMATION_EMAIL_MUTATION = gql`
+  mutation ($userId: String!) {
+    resendConfirmationEmail(userId: $userId)
+  }
+`
+
+export const CONFIRM_ACCOUNT_MUTATION = gql`
+  mutation ($userId: String!) {
+    confirmAccount(userId: $userId) {
       id
       token
       username
