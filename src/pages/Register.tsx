@@ -1,10 +1,8 @@
-import { useState, useContext } from "react";
-import { Button, Container, Form } from "semantic-ui-react";
+import { useState } from "react";
+import { Button, Container, Form, Modal } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
-import { AuthContext } from "../context/auth";
 import { REGISTER_USER_MUTATION } from "../graphql/mutations";
 import { OnForm } from "../utils/hooks";
-import { UserMutation } from "../graphql/mutations";
 import { AuthFormType, FormErrorsType } from "../common/types";
 import { ErrorsBlock } from "../components/ErrorsBlock";
 
@@ -18,17 +16,20 @@ const Register = (props: any) => {
 
   const { values, onChange, onSubmit } = OnForm(registerUser, initState);
 
-  const context = useContext(AuthContext);
+  // Remove this from here and redirect to a page with the user's
+  // const context = useContext(AuthContext);
   const [errors, setErrors] = useState({} as FormErrorsType);
+  const [showModal, setShowModal] = useState(false);
 
   const [register, { loading }] = useMutation(REGISTER_USER_MUTATION, {
     update: (_, result) => {
-      context.login(result as UserMutation);
-      props.history.push("/");
+      setShowModal(true);
     },
     onError: (err) => {
-      const errs = err.graphQLErrors[0].extensions?.exception.errors;
-      setErrors(errs);
+      if (err.graphQLErrors[0].extensions?.code === "BAD_USER_INPUT") {
+        const errs = err.graphQLErrors[0].extensions?.exception.errors;
+        setErrors(errs);
+      }
     },
     variables: values,
   });
@@ -95,15 +96,28 @@ const Register = (props: any) => {
               icon={<i className="lock icon" />}
               data-testid="register-form-confirm-password"
             />
-            <Button
-              fluid
-              type="submit"
-              primary
-              className="button"
-              data-testid="register-form-register"
+            <Modal
+              open={showModal}
+              closeOnEscape={true}
+              closeIcon={true}
+              onClose={() => setShowModal(false)}
+              trigger={
+                <Button
+                  fluid
+                  type="submit"
+                  primary
+                  className="button"
+                  data-testid="register-form-register"
+                >
+                  Register
+                </Button>
+              }
             >
-              Register
-            </Button>
+              <Modal.Header>Account Created!</Modal.Header>
+              <Modal.Content>
+                Please check your email to verify your account!
+              </Modal.Content>
+            </Modal>
           </div>
         </Form>
         <ErrorsBlock errors={errors} />
